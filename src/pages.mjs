@@ -3,11 +3,90 @@ import * as X from './templates/components.mjs';
 import { esc, icon, ctaBand } from './templates/layout.mjs';
 import * as S from './schema.mjs';
 import { faq as FAQ, bodyWork as BW } from './data/content.mjs';
+import { servicePages, pageLinks } from './data/servicePages.mjs';
+
+export const related = (slugs, title = 'Related services') => `<section class="section section--tight related-sec">
+  <div class="wrap">
+    <div class="related" data-reveal>
+      <span class="eyebrow">${title}</span>
+      <div class="related-links">${slugs
+        .filter((s) => pageLinks[s])
+        .map((s) => `<a href="${pageLinks[s][0]}">${pageLinks[s][1]}${icon('arrow-right')}</a>`)
+        .join('')}</div>
+    </div>
+  </div>
+</section>`;
+
+function servicePage(site, biz, p) {
+  const parent = p.group === 'body' ? ['/body-shop/', 'Body Shop'] : p.group === 'insurance' ? null : ['/auto-repair/', 'Repair Services'];
+  const crumbs = [['/', 'Home'], ...(parent ? [parent] : []), ['', p.label]];
+  const side =
+    p.group === 'insurance'
+      ? `<div class="ins-stack"><div class="ins-card ins-card--gold">
+          <div class="ins-ic">${icon('badge')}</div>
+          <h2 class="ins-h">CarMax MaxCare</h2>
+          <p>We accept all CarMax MaxCare coverage.</p>
+          <p class="ins-strong">Save on your deductible.</p>
+          <a class="ins-call" href="tel:${site.phoneE164}" data-tel>${icon('phone')}Call for details.</a>
+        </div></div>`
+      : `<div class="side-card">
+          <h2>What we handle</h2>
+          <ul class="checks">${p.items.map((x) => `<li>${icon('check')}${esc(x)}</li>`).join('')}</ul>
+          <div class="side-foot"><span>Free estimates</span><span>Same-day on most jobs</span><span>12 mo / 12k mi warranty</span></div>
+        </div>`;
+  const blocks = p.blocks
+    ? `<section class="section section--tight prose-sec">
+  <div class="wrap">
+    ${X.sectionHead({ eyebrow: 'CarMax MaxCare', title: p.blocksTitle })}
+    <div class="prose-grid" style="margin-top:40px">${p.blocks
+      .map((b, i) => `<div class="prose-card" data-reveal style="--rd:${(i % 4) * 80}ms"><div class="svc-ic">${icon(b.icon)}</div><h3>${b.title}</h3><p>${b.text}</p></div>`)
+      .join('')}</div>
+  </div>
+</section>`
+    : '';
+  const signs = `<section class="section signs-sec light">
+  <div class="wrap signs-grid">
+    <div>
+      ${X.sectionHead({ eyebrow: p.kicker, title: p.signsTitle, light: true })}
+    </div>
+    <ul class="signs" data-reveal>${p.signs.map((s) => `<li>${icon('check')}<span>${esc(s)}</span></li>`).join('')}</ul>
+  </div>
+</section>`;
+  return {
+    path: `/${p.slug}/`,
+    out: `${p.slug}/index.html`,
+    title: p.title,
+    description: p.description,
+    priority: p.group === 'insurance' ? '0.9' : '0.8',
+    schema: [
+      biz,
+      S.service(site, { name: p.service.name, serviceType: p.service.serviceType, description: p.lede, path: `/${p.slug}/` }),
+      S.breadcrumbs(site, crumbs.map(([href, name], i) => [i === crumbs.length - 1 ? `/${p.slug}/` : href, name])),
+      S.faqPage(p.faq),
+    ],
+    body: [
+      X.pageHero({
+        crumbs,
+        kicker: p.kicker,
+        h1: p.h1,
+        lede: p.lede,
+        actions: apptBtn(p.group === 'body' ? 'Get a free estimate' : 'Request an appointment', p.formService) + callBtn(site),
+        side,
+      }),
+      blocks,
+      signs,
+      X.faq(p.faq, `${p.label} questions.`),
+      related(p.related),
+      ctaBand(site),
+    ].join('\n\n'),
+  };
+}
+
 
 const pick = (...qs) => FAQ.filter(([q]) => qs.some((s) => q.startsWith(s)));
 const callBtn = (site, cls = 'btn btn--ghost btn--lg') => `<a class="${cls}" href="tel:${site.phoneE164}" data-tel>${icon('phone')}<span>${esc(site.phone)}</span></a>`;
 const apptBtn = (label = 'Request an appointment', service = '') =>
-  `<a class="btn btn--primary btn--lg" href="/#contact" data-appt${service ? ` data-service="${service}"` : ''}>${icon('calendar')}${label}</a>`;
+  `<a class="btn btn--primary btn--lg" href="${service ? `/?service=${encodeURIComponent(service)}#contact` : '/#contact'}" data-appt>${icon('calendar')}${label}</a>`;
 
 const prose = (blocks) => `<section class="section section--tight prose-sec">
   <div class="wrap prose-grid">
@@ -34,7 +113,7 @@ export default function pages(site) {
       out: 'index.html',
       title: 'Premier Motors | Auto Repair & Body Shop in Rockville, MD',
       description:
-        'Auto repair and body work in Rockville, MD since 2003. Specials on oil changes and MD state inspection. All insurance accepted. Save on your deductible. Call (301) 340-2130.',
+        'Rockville, MD auto repair & body shop since 2003. Oil change & MD inspection specials. All insurance & CarMax MaxCare accepted. Call (301) 340-2130.',
       alternates: [['en', '/'], ['es', '/es/'], ['x-default', '/']],
       priority: '1.0',
       schema: [biz, S.website(site), S.faqPage()],
@@ -96,6 +175,7 @@ export default function pages(site) {
   </div>
 </section>`,
         X.faq(insFaq, 'Body shop &amp; insurance questions.'),
+        related(['auto-painting', 'dent-repair', 'windshield-glass', 'carmax-maxcare', 'auto-repair'], 'More body shop services'),
         ctaBand(site),
       ].join('\n\n'),
     },
@@ -136,6 +216,7 @@ export default function pages(site) {
         X.vehicles(),
         X.why(),
         X.faq(pick('Do I need', 'How long', 'What parts', 'What vehicles', 'Do you offer towing', 'What warranty')),
+        related(['brake-repair', 'check-engine-light', 'engine-repair', 'transmission-repair', 'ac-repair', 'tires', 'oil-change', 'maryland-state-inspection', 'fleet-service', 'carmax-maxcare'], 'Repair services'),
         ctaBand(site),
       ].join('\n\n'),
     },
@@ -182,6 +263,7 @@ export default function pages(site) {
             { icon: 'engine', title: 'Emissions repair (VEIP)', paras: ['Emissions testing (VEIP) is a separate program. If your vehicle needs emissions repair to pass VEIP, we can help with that too.'] },
           ]),
           X.faq(f, 'State inspection questions.'),
+          related(['brake-repair', 'tires', 'windshield-glass', 'check-engine-light']),
           ctaBand(site),
         ].join('\n\n'),
       };
@@ -228,6 +310,7 @@ export default function pages(site) {
             { icon: 'clipboard', title: 'Scheduled maintenance', paras: ['Coming up on 30k, 60k or 90k miles? We handle scheduled maintenance, fluids, filters, belts and tune-ups too.'] },
           ]),
           X.faq(f, 'Oil change questions.'),
+          related(['tires', 'brake-repair', 'maryland-state-inspection', 'auto-repair']),
           ctaBand(site),
         ].join('\n\n'),
       };
@@ -309,6 +392,28 @@ export default function pages(site) {
         X.contact(site, 'es'),
         ctaBand(site, 'es'),
       ].join('\n\n'),
+    },
+
+    // ---------------------------------------------------------------- Service landing pages
+    ...servicePages.map((p) => servicePage(site, biz, p)),
+
+    // ---------------------------------------------------------------- /review/ short link for cards & receipts
+    {
+      path: '/review/',
+      out: 'review/index.html',
+      noindex: true,
+      sitemap: false,
+      title: 'Review Premier Motors on Google',
+      description: 'Leave a review for Premier Motors LLC on Google.',
+      schema: [],
+      redirect: site.googleReviewUrl || site.googleMapsUrl,
+      body: X.pageHero({
+        crumbs: [['/', 'Home'], ['', 'Leave a review']],
+        kicker: 'Thank you',
+        h1: 'Thanks for choosing Premier Motors.',
+        lede: 'Taking you to Google so you can share your experience. It helps your neighbors find an honest shop.',
+        actions: `<a class="btn btn--primary btn--lg" href="${esc(site.googleReviewUrl || site.googleMapsUrl)}">${icon('star')}Leave a Google review</a>`,
+      }),
     },
 
     // ---------------------------------------------------------------- 404

@@ -2,6 +2,8 @@
 import { esc, icon, addressLine } from './layout.mjs';
 import * as C from '../data/content.mjs';
 
+const SVC_LINKS = {"maintenance": [["/oil-change/", "Oil change special"], ["/maryland-state-inspection/", "MD inspection"]], "brakes": [["/brake-repair/", "Brake repair"], ["/tires/", "Alignment"]], "engine": [["/check-engine-light/", "Check engine light"], ["/engine-repair/", "Engine repair"]], "transmission": [["/transmission-repair/", "Transmission repair"]], "tires": [["/tires/", "Tires &amp; alignment"]], "ac": [["/ac-repair/", "A/C repair"]], "towing": []};
+
 const head = ({ eyebrow, title, accent = '', text = '', center = false, light = false, h = 'h2', id = '' }) => `
     <div class="section-head${center ? ' center' : ''}" data-reveal>
       <span class="eyebrow${center ? ' eyebrow--center' : ''}${light ? ' eyebrow--dark' : ''}">${eyebrow}</span>
@@ -47,7 +49,7 @@ export function hero(site) {
       </div>
       <div class="hero-points" data-reveal style="--rd:420ms">
         <div class="hero-point"><span class="tick">${icon('check')}</span>12-month / 12,000-mile warranty on parts &amp; labor</div>
-        <div class="hero-point"><span class="tick">${icon('check')}</span>All insurance &amp; CarMax MaxCare accepted</div>
+        <div class="hero-point"><span class="tick">${icon('check')}</span><span>All insurance &amp; <a class="u-link" href="/carmax-maxcare/">CarMax MaxCare</a> accepted</span></div>
         <div class="hero-point"><span class="tick">${icon('check')}</span>ASE certified · Se habla español</div>
       </div>
       <a class="hero-loc" href="${site.googleMapsUrl}" target="_blank" rel="noopener" data-reveal style="--rd:500ms">${icon('pin')}<span>${esc(addressLine(site))}</span>${icon('arrow-right', 'icon hero-loc-arrow')}</a>
@@ -139,6 +141,7 @@ export function insuranceCards(site, lang = 'en') {
         ${c.lines.map((l) => `<p>${esc(l)}</p>`).join('')}
         <p class="ins-strong">${esc(c.strong)}</p>
         <a class="ins-call" href="tel:${site.phoneE164}" data-tel>${icon('phone')}${es ? 'Llame para más detalles.' : 'Call for details.'}</a>
+        ${i === 1 && !es ? `<a class="ins-more" href="/carmax-maxcare/">MaxCare repairs at Premier ${icon('arrow-right')}</a>` : ''}
       </div>`,
     )
     .join('\n      ');
@@ -152,7 +155,7 @@ export function bodyWork(site, { h = 'h2', withLink = true } = {}) {
       <ul class="bw-list">
         ${C.bodyWork
           .map(
-            (b, i) => `<li data-reveal style="--rd:${i * 80}ms"><span class="bw-ic">${icon(b.icon)}</span><div><h3>${b.title}</h3><p>${b.text}</p></div></li>`,
+            (b, i) => `<li data-reveal style="--rd:${i * 80}ms"><span class="bw-ic">${icon(b.icon)}</span><div><h3><a href="${{ collision: '/body-shop/', dent: '/dent-repair/', paint: '/auto-painting/', glass: '/windshield-glass/' }[b.icon]}">${b.title}</a></h3><p>${b.text}</p></div></li>`,
           )
           .join('\n        ')}
       </ul>
@@ -200,6 +203,7 @@ export function services({ full = false, h = 'h2' } = {}) {
         <div class="svc-ic">${icon(g.icon)}</div>
         <h3>${g.title}</h3>
         <ul>${g.items.map((it) => `<li>${esc(it)}</li>`).join('')}</ul>
+        ${(SVC_LINKS[g.id] || []).length ? `<div class="svc-links">${SVC_LINKS[g.id].map(([h, l]) => `<a href="${h}">${l}${icon('arrow-right')}</a>`).join('')}</div>` : ''}
       </article>`,
         )
         .join('\n      ')}
@@ -336,6 +340,7 @@ export function contact(site, lang = 'en') {
         ? {
             Specials: 'Especiales',
             'Body work / insurance claim': 'Carrocería / reclamo de seguro',
+            'CarMax MaxCare': 'CarMax MaxCare',
             Maintenance: 'Mantenimiento',
             Brakes: 'Frenos',
             'Engine / check engine light': 'Motor / luz de check engine',

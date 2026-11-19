@@ -79,6 +79,34 @@ if (siteUrl) {
       '    Canonical tags, hreflang, absolute OG image and sitemap.xml are skipped until the domain is set.\n',
   );
 }
+// llms.txt: a plain-text summary for AI assistants and answer engines (ChatGPT, Perplexity, Gemini, Copilot).
+writeFileSync(
+  join(out, 'llms.txt'),
+  `# ${site.legalName}
+
+> Independent auto repair and body shop in Rockville, Maryland, in business since ${site.founded}. Mechanical repair and body work under one roof. All insurance companies accepted. CarMax MaxCare coverage accepted. Se habla español.
+
+- Address: ${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.postalCode} (${site.address.note})
+- Phone: ${site.phone}
+- Hours: Monday–Friday ${site.hours.display}; Saturday and Sunday closed; after-hours key drop
+- Serving: ${site.serviceArea.join(', ')} and Montgomery County, MD
+- Warranty: 12 months / 12,000 miles on parts and labor
+- Free estimates; same-day service on most common jobs; appointments and walk-ins welcome
+- Insurance: works with all insurance companies; save on your deductible, up to $500 (call for details)
+- CarMax MaxCare: accepts all CarMax MaxCare coverage; save on your deductible (call for details)
+- Languages: English, Spanish
+
+## Current specials
+${site.specials.map((s) => `- ${s.title} (${s.detail}): $${s.price}, regular $${s.regular}`).join('\n')}
+
+## Pages
+${list
+  .filter((p) => p.sitemap !== false && !p.noindex)
+  .map((p) => `- [${p.title.split(' | ')[0]}](${(siteUrl || base) + p.path})`)
+  .join('\n')}
+`,
+);
+
 if (preview) console.log('  · preview build: every page is noindex');
 if (base) console.log(`  · base path: ${base}`);
 console.log(`\nBuilt ${list.length} pages → dist/`);

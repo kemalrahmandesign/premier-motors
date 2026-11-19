@@ -27,9 +27,9 @@ const nav = (lang) =>
     : [
         ['/#specials', 'Specials'],
         ['/body-shop/', 'Body Shop'],
-        ['/auto-repair/', 'Repair Services'],
+        ['/auto-repair/', 'Repairs'],
         ['/maryland-state-inspection/', 'MD Inspection'],
-        ['/#about', 'About'],
+        ['/carmax-maxcare/', 'CarMax MaxCare'],
         ['/#contact', 'Contact'],
       ];
 
@@ -52,6 +52,7 @@ function head(site, page) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(page.title)}</title>
 <meta name="description" content="${esc(page.description)}">
+${page.redirect ? `<meta http-equiv="refresh" content="1;url=${esc(page.redirect)}">` : ''}
 <meta name="robots" content="${page.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'}">
 ${url ? `<link rel="canonical" href="${url}">` : ''}
 ${site.siteUrl ? alt.map(([hl, p]) => `<link rel="alternate" hreflang="${hl}" href="${site.siteUrl.replace(/\/$/, '')}${p}">`).join('\n') : ''}
@@ -93,6 +94,7 @@ function utility(site, lang) {
     <span class="util-item util-secondary">${icon('clock')}<span>${es ? 'Lun – Vie · 8:00 AM – 5:00 PM' : `Mon – Fri · ${site.hours.display}`}</span></span>
     <span class="util-item util-status" data-open-status data-lang="${es ? 'es' : 'en'}"></span>
     <span class="util-spacer"></span>
+    <a class="util-item util-mc" href="/carmax-maxcare/">${icon('badge')}<span>${es ? 'Aceptamos CarMax MaxCare' : 'CarMax MaxCare accepted'}</span></a>
     ${es ? '' : `<a class="util-item util-es" href="/es/" hreflang="es" lang="es">${icon('globe')}<span>Se habla español</span></a>`}
   </div>
 </div>`;
@@ -156,14 +158,24 @@ function footer(site, lang) {
           : 'Auto repair and body shop in Rockville, MD since 2003. Service and honesty on every job.'}</p>
         ${social ? `<div class="foot-socials">${social}</div>` : ''}
       </div>
-      <div class="foot-col">
+      <div class="foot-col foot-col--svc">
         <div class="foot-title">${es ? 'Servicios' : 'Services'}</div>
         <a href="/#specials">${es ? 'Especiales' : 'Specials'}</a>
         <a href="/body-shop/">${es ? 'Carrocería y colisión' : 'Body shop & collision'}</a>
         <a href="/auto-repair/">${es ? 'Reparación mecánica' : 'Auto repair services'}</a>
         <a href="/maryland-state-inspection/">${es ? 'Inspección estatal de MD' : 'MD state inspection'}</a>
         <a href="/oil-change/">${es ? 'Cambio de aceite' : 'Oil change special'}</a>
-        <a href="/#fleet">${es ? 'Flotas y empresas' : 'Fleet & business'}</a>
+        <a href="/carmax-maxcare/">CarMax MaxCare</a>
+        <a href="/brake-repair/">${es ? 'Frenos' : 'Brake repair'}</a>
+        <a href="/check-engine-light/">${es ? 'Luz de check engine' : 'Check engine light'}</a>
+        <a href="/engine-repair/">${es ? 'Motor' : 'Engine repair'}</a>
+        <a href="/transmission-repair/">${es ? 'Transmisión' : 'Transmission repair'}</a>
+        <a href="/ac-repair/">${es ? 'Aire acondicionado' : 'A/C repair'}</a>
+        <a href="/tires/">${es ? 'Llantas y alineación' : 'Tires & alignment'}</a>
+        <a href="/auto-painting/">${es ? 'Pintura' : 'Auto painting'}</a>
+        <a href="/dent-repair/">${es ? 'Abolladuras' : 'Dent repair'}</a>
+        <a href="/windshield-glass/">${es ? 'Parabrisas' : 'Windshield & glass'}</a>
+        <a href="/fleet-service/">${es ? 'Flotas y empresas' : 'Fleet & work vans'}</a>
       </div>
       <div class="foot-col">
         <div class="foot-title">${es ? 'Empresa' : 'Company'}</div>

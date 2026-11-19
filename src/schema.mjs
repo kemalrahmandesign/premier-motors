@@ -45,7 +45,14 @@ export function business(site) {
       { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
     ],
     knowsLanguage: ['en', 'es'],
-    paymentAccepted: 'Cash, Credit Card',
+    paymentAccepted: 'Cash, Credit Card, Auto insurance claims, CarMax MaxCare',
+    slogan: 'Service and honesty on every job.',
+    knowsAbout: [
+      'Auto repair', 'Auto body repair', 'Collision repair', 'Insurance claim repairs', 'CarMax MaxCare repairs',
+      'Maryland State Safety Inspection', 'Brake repair', 'Check engine light diagnostics', 'Engine repair',
+      'Transmission repair', 'Auto A/C repair', 'Wheel alignment', 'Auto painting', 'Dent repair',
+      'Windshield replacement', 'Fleet vehicle maintenance', 'Emissions repair (VEIP)',
+    ],
     currenciesAccepted: 'USD',
     numberOfEmployees: { '@type': 'QuantitativeValue', value: 5 },
     ...(site.social?.length ? { sameAs: site.social.filter((s) => s.url).map((s) => s.url) } : {}),
@@ -67,6 +74,7 @@ export function business(site) {
         'Wheel alignment', 'Tire sales, mounting and balancing', 'Check engine light diagnostics',
         'Engine repair', 'Transmission repair', 'Clutch replacement', 'Exhaust and catalytic converters',
         'Emissions repair', 'A/C repair', 'Battery, alternator and starter', 'Towing', 'Fleet vehicle service',
+        'CarMax MaxCare repairs', 'Insurance claim repairs',
       ].map((n) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: n } })),
     },
   };

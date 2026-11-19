@@ -161,6 +161,11 @@
     var msg = form.querySelector('[name="message"]');
     var date = form.querySelector('[name="preferred_date"]');
     if (date) { try { date.min = new Date().toISOString().slice(0, 10); } catch (e) {} }
+    // Service pages link here as /?service=Brakes#contact: pre-select that service.
+    try {
+      var want = new URLSearchParams(location.search).get('service');
+      if (want && select && Array.prototype.some.call(select.options, function (o) { return o.value === want; })) select.value = want;
+    } catch (e) {}
 
     // "Book this special" / "Get a free estimate" buttons pre-fill the service.
     document.addEventListener('click', function (e) {

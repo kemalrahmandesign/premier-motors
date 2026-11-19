@@ -15,6 +15,12 @@ Auto repair and body shop in Rockville, MD. Static site with no dependencies, bu
 | `/maryland-state-inspection/` | "MD state inspection Rockville" ($99.95 special) |
 | `/oil-change/` | "oil change Rockville" ($49.99 special) |
 | `/es/` | Spanish page ("taller mecánico Rockville", "se habla español") |
+| `/carmax-maxcare/` | "CarMax MaxCare repair shop Rockville / near me" |
+| `/brake-repair/` `/check-engine-light/` `/engine-repair/` `/transmission-repair/` `/ac-repair/` `/tires/` `/fleet-service/` | Mechanical service searches |
+| `/auto-painting/` `/dent-repair/` `/windshield-glass/` | Body shop service searches |
+| `/review/` | Short link for review cards; forwards to `googleReviewUrl` (noindex) |
+
+Service landing pages are data-driven: edit `src/data/servicePages.mjs`. The off-site plan (Google Business Profile, reviews, citations) is in [`docs/GOOGLE-GROWTH-PLAN.md`](docs/GOOGLE-GROWTH-PLAN.md).
 
 ## Editing
 
