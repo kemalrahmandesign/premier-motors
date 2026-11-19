@@ -47,7 +47,7 @@ export default function pages(site) {
         X.services(),
         X.vehicles(),
         X.reviews(site),
-        X.about(),
+        X.about(site),
         X.fleet(site),
         X.faq(),
         X.areas(site),
@@ -262,7 +262,7 @@ export default function pages(site) {
       </div>
     </div>
     <div class="hero-media" data-reveal="scale" style="--rd:150ms">
-      ${X.brandFrame()}
+      ${X.brandFrame('', site.heroImage)}
       <div class="hero-est">DESDE ${site.founded}</div>
       <div class="hero-badge"><div class="badge-ic">${icon('globe')}</div><div><div class="b-title">Se habla español</div><div class="b-sub">Llámenos con confianza</div></div></div>
     </div>

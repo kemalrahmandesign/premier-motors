@@ -213,7 +213,7 @@ ${body}
 </main>
 ${mobileBar(site, lang)}
 ${footer(site, lang)}
-<script>window.PM=${JSON.stringify({ formEndpoint: site.formEndpoint, hours: site.hours })};</script>
+<script>window.PM=${JSON.stringify({ formEndpoint: site.formEndpoint, formReady: !!site.web3formsKey, hours: site.hours })};</script>
 <script src="/assets/js/main.js?v=${page.buildId}" defer></script>
 </body>
 </html>

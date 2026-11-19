@@ -9,8 +9,17 @@ const head = ({ eyebrow, title, accent = '', text = '', center = false, light = 
       ${text ? `<p>${text}</p>` : ''}
     </div>`;
 
-// Decorative brand panel used where a photo would go. Swap for <img> once client photos arrive.
-export const brandFrame = (extraClass = '') => `
+// Brand panel where a photo goes. With a photo (site.json heroImage / aboutImage) it shows the
+// photo under a black-and-gold grade; without one it shows the logo mark on the gold gauge.
+export const photoFrame = (src, alt, extraClass = '') => `
+      <div class="frame frame--brand frame--photo ${extraClass}">
+        <img class="frame-photo" src="${src}" alt="${esc(alt)}" width="1200" height="1500" fetchpriority="high">
+        <span class="frame-grade" aria-hidden="true"></span>
+        <span class="sweep" aria-hidden="true"></span>
+      </div>`;
+
+export const brandFrame = (extraClass = '', photo = '', alt = 'Premier Motors auto repair and body shop in Rockville, MD') =>
+  photo ? photoFrame(photo, alt, extraClass) : `
       <div class="frame frame--brand ${extraClass}">
         <svg class="gauge" viewBox="0 0 400 400" aria-hidden="true">
           <defs>
@@ -44,7 +53,7 @@ export function hero(site) {
       <a class="hero-loc" href="${site.googleMapsUrl}" target="_blank" rel="noopener" data-reveal style="--rd:500ms">${icon('pin')}<span>${esc(addressLine(site))}</span>${icon('arrow-right', 'icon hero-loc-arrow')}</a>
     </div>
     <div class="hero-media" data-reveal="scale" style="--rd:150ms">
-      ${brandFrame()}
+      ${brandFrame('', site.heroImage)}
       <div class="hero-est">EST. ${site.founded}</div>
       <div class="hero-badge">
         <div class="badge-ic">${icon('shield')}</div>
@@ -247,14 +256,14 @@ export function reviews(site) {
 </section>`;
 }
 
-export function about() {
+export function about(site = {}) {
   return `<section class="section about" id="about">
   <div class="wrap">
     <div class="about-media" data-reveal="left">
-      <div class="frame frame--brand frame--about">
+      ${site.aboutImage ? photoFrame(site.aboutImage, 'Inside the Premier Motors shop in Rockville, MD', 'frame--about') : `<div class="frame frame--brand frame--about">
         <img class="frame-logo" src="/assets/img/logo-full.webp" alt="Premier Motors LLC logo" width="1098" height="533" loading="lazy">
         <span class="sweep" aria-hidden="true"></span>
-      </div>
+      </div>`}
       <div class="about-tag"><span>${icon('wrench')}</span>Team of five · One roof</div>
     </div>
     <div class="about-copy">
@@ -352,12 +361,14 @@ export function contact(site, lang = 'en') {
           'Envíe su solicitud y le llamaremos para confirmar la hora. ¿Prefiere hablar? Llámenos al ' + site.phone + '. También atendemos sin cita.',
         ),
       })}
-      <form class="book-form" id="bookForm" action="${esc(site.formEndpoint.replace('/ajax/', '/'))}" method="POST" novalidate data-lang="${lang}">
-        <input type="hidden" name="_subject" value="New appointment request: Premier Motors website">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
+      <!-- Booking form -> Web3Forms (https://web3forms.com), which emails each request to the shop's inbox.
+           The access key comes from web3formsKey in src/data/site.json. -->
+      <form class="book-form" id="bookForm" action="${esc(site.formEndpoint)}" method="POST" novalidate data-lang="${lang}" data-endpoint="${esc(site.formEndpoint)}">
+        <input type="hidden" name="access_key" value="${esc(site.web3formsKey || '')}">
+        <input type="hidden" name="subject" value="${es ? 'Nueva solicitud de cita (español): Premier Motors' : 'New appointment request: Premier Motors website'}">
+        <input type="hidden" name="from_name" value="Premier Motors website">
         <input type="hidden" name="language" value="${es ? 'Spanish' : 'English'}">
-        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="field-row">
           <div class="field"><label for="fName">${t(lang, 'Name', 'Nombre')} <em>*</em></label><input id="fName" name="name" type="text" autocomplete="name" required></div>
           <div class="field"><label for="fPhone">${t(lang, 'Phone', 'Teléfono')} <em>*</em></label><input id="fPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>

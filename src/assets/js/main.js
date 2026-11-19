@@ -184,10 +184,17 @@
         status.textContent = es ? 'Por favor escriba su nombre y un número de teléfono válido.' : 'Please enter your name and a valid phone number.';
         return;
       }
-      if (form.querySelector('[name="_honey"]').value) return;
+      if (form.querySelector('[name="botcheck"]').checked) return;
+      if (!PM.formReady) {
+        status.className = 'form-status error';
+        status.innerHTML = (es ? 'El formulario aún no está conectado. Llámenos al ' : 'Online requests aren\u2019t connected yet. Please call us at ') + '<a href="tel:+13013402130"><u>(301) 340-2130</u></a>.';
+        if (window.console) console.warn('Booking form: set web3formsKey in src/data/site.json');
+        return;
+      }
 
       var data = {};
-      new FormData(form).forEach(function (v, k) { data[k] = v; });
+      new FormData(form).forEach(function (v, k) { if (k !== 'botcheck') data[k] = v; });
+      if (data.email) data.replyto = data.email;
       var btn = form.querySelector('button[type="submit"]');
       btn.disabled = true;
       status.className = 'form-status';
@@ -200,7 +207,7 @@
       })
         .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
         .then(function (res) {
-          if (!res.ok || (res.j && (res.j.success === false || res.j.success === 'false'))) throw new Error('send failed');
+          if (!res.ok || !res.j || res.j.success !== true) throw new Error((res.j && res.j.message) || 'send failed');
           form.classList.add('sent');
           status.className = 'form-status';
           status.textContent = es

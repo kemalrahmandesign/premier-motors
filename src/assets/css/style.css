@@ -230,6 +230,10 @@ a.util-item:hover { color: var(--gold-lt); }
 .gauge { position: absolute; width: 92%; max-width: 520px; height: auto; left: 50%; top: 50%; transform: translate(-50%, -50%); }
 .gauge-arc { stroke-dasharray: 760; stroke-dashoffset: 760; animation: arc 2.4s .4s var(--ease) forwards; }
 @keyframes arc { to { stroke-dashoffset: 120; } }
+.frame--photo { display: block; }
+.frame--photo::before { display: none; }
+.frame-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.frame-grade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,.05) 40%, rgba(10,10,10,.65) 100%), radial-gradient(120% 80% at 80% 0%, rgba(201,174,120,.18), transparent 60%); mix-blend-mode: normal; pointer-events: none; }
 .frame-mark { position: relative; width: 44%; max-width: 250px; filter: drop-shadow(0 10px 40px rgba(201,174,120,.25)); }
 .sweep { position: absolute; inset: -40%; background: linear-gradient(105deg, transparent 42%, rgba(255,240,200,.10) 50%, transparent 58%); animation: sweep 7s 1.2s ease-in-out infinite; pointer-events: none; }
 @keyframes sweep { 0% { transform: translateX(-60%); } 40%, 100% { transform: translateX(60%); } }

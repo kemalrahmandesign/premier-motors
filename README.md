@@ -1,5 +1,8 @@
 # Premier Motors LLC: website
 
+Preview (GitHub Pages, redeploys on every push to the branch): https://kemalrahmandesign.github.io/premier-motors/
+The preview build is `noindex` and its robots.txt blocks crawlers, so Google won't index it before the real domain is live.
+
 Auto repair and body shop in Rockville, MD. Static site with no dependencies, built from `src/` into `dist/` by `build.mjs`. The layout follows the Marv & Mike's template, re-themed in black and brushed gold to match the logo.
 
 ## Pages
@@ -36,9 +39,13 @@ The preview serves at http://localhost:4173.
 
 Import the repo in Vercel. `vercel.json` already sets `buildCommand: node build.mjs` and `outputDirectory: dist`. Once the domain is known, add an environment variable `SITE_URL=https://www.<domain>` (or fill `siteUrl` in `site.json`). That turns on canonical tags, hreflang, absolute OG image URLs and `sitemap.xml`. Without it the build warns and skips them.
 
-## Contact form
+## Contact form (Web3Forms, same as Alexandria Car Clinic)
 
-The form posts to FormSubmit (`formEndpoint` in `site.json`) and delivers to premiermotorsmd@gmail.com. No account is needed. **The first submission sends an activation email to that inbox, and someone has to click it.** After activation, FormSubmit gives a random alias. Swap that alias in for the email in `formEndpoint` so the address isn't in the page source.
+The form posts to Web3Forms, which emails each request. To connect it:
+1. Go to https://web3forms.com, enter **premiermotorsmd@gmail.com** and create an access key (it's emailed to that inbox).
+2. Paste it into `web3formsKey` in `src/data/site.json`, then push.
+
+Until the key is set, the form doesn't send. It asks visitors to call (301) 340-2130 instead.
 
 ## Placeholders still waiting on the client
 
@@ -50,7 +57,7 @@ Per the brief, nothing below is invented. Each item is either hidden or left out
 | Social links | `social` in `site.json`: `[{ "label": "Facebook", "url": "…", "icon": "facebook" }]` |
 | Google review link (Place ID) | `googleReviewUrl` shows a "Leave a review" button |
 | Live Google reviews widget | `reviewsWidgetHtml` (embed code from a reviews widget that pulls live) |
-| Photos | Replace the gold brand panels (`brandFrame()` in `components.mjs`) with `<img>` |
+| Photos | Put files in `src/assets/img/` and set `heroImage` / `aboutImage` in `site.json` (e.g. `/assets/img/hero.jpg`). They get the black-and-gold grade automatically. Until then the gold logo panels show. |
 | GA4 / Search Console | `ga4Id`, `googleSiteVerification` |
 | ASE details, diagnostic fee, discount amounts, deductible terms | Not mentioned beyond the brief's approved wording |
 

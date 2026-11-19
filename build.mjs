@@ -14,6 +14,11 @@ const site = JSON.parse(readFileSync(join(root, 'src/data/site.json'), 'utf8'));
 // Allow the live domain to be supplied at deploy time without editing the JSON.
 if (process.env.SITE_URL) site.siteUrl = process.env.SITE_URL;
 const siteUrl = (site.siteUrl || '').replace(/\/$/, '');
+// BASE_PATH serves the site from a sub-folder (GitHub Pages preview: /premier-motors).
+const base = (process.env.BASE_PATH || '').replace(/\/$/, '');
+// PREVIEW=1 keeps a test deployment out of Google until the real domain is live.
+const preview = process.env.PREVIEW === '1';
+const withBase = (html) => (base ? html.replace(/\b(href|src|action|content)="\/(?!\/)/g, `$1="${base}/`) : html);
 const buildId = Date.now().toString(36);
 
 rmSync(out, { recursive: true, force: true });
@@ -23,7 +28,7 @@ cpSync(join(root, 'src/assets/img/favicon.ico'), join(out, 'favicon.ico'));
 
 const list = pages(site);
 for (const page of list) {
-  const html = layout(site, { ...page, buildId }, page.body);
+  const html = withBase(layout(site, { ...page, buildId, noindex: page.noindex || preview }, page.body));
   const file = join(out, page.out);
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, html);
@@ -36,13 +41,13 @@ writeFileSync(
     {
       name: site.legalName,
       short_name: site.name,
-      start_url: '/',
+      start_url: `${base}/`,
       display: 'standalone',
       background_color: '#0a0a0a',
       theme_color: '#0a0a0a',
       icons: [
-        { src: '/assets/img/icon-192.png', sizes: '192x192', type: 'image/png' },
-        { src: '/assets/img/icon-512.png', sizes: '512x512', type: 'image/png' },
+        { src: `${base}/assets/img/icon-192.png`, sizes: '192x192', type: 'image/png' },
+        { src: `${base}/assets/img/icon-512.png`, sizes: '512x512', type: 'image/png' },
       ],
     },
     null,
@@ -52,7 +57,7 @@ writeFileSync(
 
 writeFileSync(
   join(out, 'robots.txt'),
-  `User-agent: *\nAllow: /\n${siteUrl ? `\nSitemap: ${siteUrl}/sitemap.xml\n` : ''}`,
+  preview ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\n${siteUrl ? `\nSitemap: ${siteUrl}/sitemap.xml\n` : ''}`,
 );
 
 if (siteUrl) {
@@ -74,4 +79,6 @@ if (siteUrl) {
       '    Canonical tags, hreflang, absolute OG image and sitemap.xml are skipped until the domain is set.\n',
   );
 }
+if (preview) console.log('  · preview build: every page is noindex');
+if (base) console.log(`  · base path: ${base}`);
 console.log(`\nBuilt ${list.length} pages → dist/`);
