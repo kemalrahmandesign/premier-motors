@@ -1,0 +1,66 @@
+{
+  "_readme": "Single source of truth for business facts and SPECIALS. Edit, then run `npm run build`. Leave a value empty (\"\") if it is not confirmed yet: the build skips anything empty instead of inventing it.",
+
+  "siteUrl": "",
+  "ga4Id": "",
+  "googleSiteVerification": "",
+  "formEndpoint": "https://formsubmit.co/ajax/premiermotorsmd@gmail.com",
+  "googleReviewUrl": "",
+  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Premier+Motors+LLC+309+Howard+Ave+Unit+G+Rockville+MD+20850",
+  "mapEmbedUrl": "https://maps.google.com/maps?q=309+Howard+Ave+Unit+G,+Rockville,+MD+20850&z=16&output=embed",
+  "reviewsWidgetHtml": "",
+  "social": [],
+
+  "name": "Premier Motors",
+  "legalName": "Premier Motors LLC",
+  "phone": "(301) 340-2130",
+  "phoneE164": "+13013402130",
+  "email": "premiermotorsmd@gmail.com",
+  "address": {
+    "street": "309 Howard Ave, Unit G",
+    "city": "Rockville",
+    "region": "MD",
+    "postalCode": "20850",
+    "country": "US",
+    "note": "Unit G office"
+  },
+  "hours": {
+    "days": "Monday – Friday",
+    "open": "08:00",
+    "close": "17:00",
+    "display": "8:00 AM – 5:00 PM",
+    "weekend": "Saturday & Sunday: Closed",
+    "afterHours": "After-hours key drop available"
+  },
+  "founded": 2003,
+  "serviceArea": ["Rockville", "Gaithersburg", "North Bethesda", "Potomac", "Derwood", "Aspen Hill", "Kensington"],
+
+  "specials": [
+    {
+      "id": "oil",
+      "title": "Oil Change + Filter + Tire Rotation",
+      "titleEs": "Cambio de aceite + filtro + rotación de llantas",
+      "detail": "Up to 5 qt full synthetic oil",
+      "detailEs": "Hasta 5 cuartos de aceite 100% sintético",
+      "price": "49.99",
+      "regular": "120",
+      "save": "Save $70",
+      "saveEs": "Ahorre $70",
+      "url": "/oil-change/"
+    },
+    {
+      "id": "inspection",
+      "title": "Maryland State Safety Inspection",
+      "titleEs": "Inspección de seguridad del estado de Maryland",
+      "detail": "Official MD state safety inspection",
+      "detailEs": "Inspección oficial de seguridad de MD",
+      "price": "99.95",
+      "regular": "129.95",
+      "save": "Save $30",
+      "saveEs": "Ahorre $30",
+      "url": "/maryland-state-inspection/"
+    }
+  ],
+  "specialsNote": "Call or stop by to schedule. Specials subject to change.",
+  "specialsNoteEs": "Llame o visítenos para programar su cita. Especiales sujetos a cambio."
+}

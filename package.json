@@ -1,0 +1,14 @@
+{
+  "name": "premier-motors",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website for Premier Motors LLC, auto repair and body shop in Rockville, MD.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "preview": "node build.mjs && npx --yes serve@14.2.4 dist -l 4173"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
