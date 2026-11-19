@@ -237,23 +237,43 @@ export function vehicles() {
 </section>`;
 }
 
+const stars = (n) =>
+  `<span class="stars" aria-label="${n} out of 5 stars">${[1, 2, 3, 4, 5].map((k) => `<svg class="icon${k <= Math.round(n) ? ' on' : ''}" aria-hidden="true"><use href="#i-star"></use></svg>`).join('')}</span>`;
+
+export const reviewCard = (r, i = 0) => `<article class="rev-card" data-reveal style="--rd:${(i % 3) * 90}ms">
+        <div class="rev-top">${r.rating ? stars(r.rating) : ''}<span class="rev-src">${icon('google')}Google</span></div>
+        <p class="quote">${esc(r.text)}</p>
+        <div class="rev-foot">
+          <div class="rev-ava" aria-hidden="true">${esc((r.name || '?').trim().charAt(0).toUpperCase())}</div>
+          <div><div class="rev-name">${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a>` : esc(r.name)}</div>${r.date ? `<div class="rev-meta">${esc(r.date)}</div>` : ''}</div>
+        </div>
+      </article>`;
+
 export function reviews(site) {
-  const widget = site.reviewsWidgetHtml
-    ? `<div class="rev-widget" data-reveal>${site.reviewsWidgetHtml}</div>`
-    : '';
+  const widget = site.reviewsWidgetHtml ? `<div class="rev-widget" data-reveal>${site.reviewsWidgetHtml}</div>` : '';
+  const manual = (site.reviews || []).filter((r) => r && r.text && r.name);
+  const live = site.googlePlaceId && site.googleMapsApiKey;
+  // Live: cards are filled in the browser from Google (rating + count only ever come from Google).
+  const grid = live
+    ? `<div class="rev-summary" data-rev-summary hidden></div>
+    <div class="rev-grid" data-google-reviews data-place-id="${esc(site.googlePlaceId)}" data-key="${esc(site.googleMapsApiKey)}">${manual.map(reviewCard).join('')}</div>`
+    : manual.length
+      ? `<div class="rev-grid">${manual.map(reviewCard).join('\n      ')}</div>`
+      : '';
   return `<section class="section reviews light" id="reviews">
   <div class="wrap">
-    ${head({ eyebrow: 'Reviews', title: 'Hear it from our customers.', accent: 'customers', center: true, light: true, text: 'Real reviews from Rockville drivers, straight from Google.' })}
+    ${head({ eyebrow: 'Google reviews', title: 'Hear it from our customers.', accent: 'customers', center: true, light: true, text: 'Real reviews from Rockville drivers, straight from Google.' })}
     ${widget}
+    ${grid}
     <div class="rev-cta" data-reveal>
       <div class="rev-g">${icon('google')}</div>
       <div class="rev-copy">
-        <h3>See our reviews on Google</h3>
+        <h3>${grid ? 'Read more on Google' : 'See our reviews on Google'}</h3>
         <p>Read what customers say about Premier Motors, or share your own experience. Your review helps neighbors find an honest shop.</p>
       </div>
       <div class="rev-actions">
-        <a class="btn btn--dark" href="${site.googleMapsUrl}" target="_blank" rel="noopener">${icon('star')}Read our Google reviews</a>
-        ${site.googleReviewUrl ? `<a class="btn btn--outline-dark" href="${esc(site.googleReviewUrl)}" target="_blank" rel="noopener">Leave a review</a>` : ''}
+        <a class="btn btn--dark" href="${site.googleMapsUrl}" target="_blank" rel="noopener" data-rev-all>${icon('star')}Read our Google reviews</a>
+        <a class="btn btn--outline-dark" href="/review/">Leave a review</a>
       </div>
     </div>
   </div>
@@ -268,7 +288,7 @@ export function about(site = {}) {
         <img class="frame-logo" src="/assets/img/logo-full.webp" alt="Premier Motors LLC logo" width="1098" height="533" loading="lazy">
         <span class="sweep" aria-hidden="true"></span>
       </div>`}
-      <div class="about-tag"><span>${icon('wrench')}</span>Team of five · One roof</div>
+      <div class="about-tag"><span>${icon('wrench')}</span>Mechanical &amp; body work · One roof</div>
     </div>
     <div class="about-copy">
       ${head({ eyebrow: 'About Premier Motors', title: 'Rockville’s shop for service and honesty.', accent: 'honesty' })}
@@ -380,11 +400,11 @@ export function contact(site, lang = 'en') {
         </div>
         <div class="field-row">
           <div class="field"><label for="fEmail">Email</label><input id="fEmail" name="email" type="email" autocomplete="email"></div>
-          <div class="field"><label for="fVehicle">${t(lang, 'Vehicle year / make / model', 'Año / marca / modelo')}</label><input id="fVehicle" name="vehicle" type="text" placeholder="${t(lang, 'e.g. 2016 Honda Accord', 'ej. 2016 Honda Accord')}"></div>
+          <div class="field"><label for="fVehicle">${t(lang, 'Vehicle', 'Vehículo')}</label><input id="fVehicle" name="vehicle" type="text" placeholder="${t(lang, 'Year, make, model', 'Año, marca, modelo')}"></div>
         </div>
         <div class="field-row">
           <div class="field"><label for="fService">${t(lang, 'Service needed', 'Servicio')}</label><select id="fService" name="service"><option value="">${t(lang, 'Choose a service', 'Elija un servicio')}</option>${opts}</select></div>
-          <div class="field"><label for="fDate">${t(lang, 'Preferred date (optional)', 'Fecha preferida (opcional)')}</label><input id="fDate" name="preferred_date" type="date"></div>
+          <div class="field"><label for="fDate">${t(lang, 'Preferred date', 'Fecha preferida')}</label><input id="fDate" name="preferred_date" type="date"></div>
         </div>
         <div class="field"><label for="fMsg">${t(lang, 'Message', 'Mensaje')}</label><textarea id="fMsg" name="message" rows="4" placeholder="${t(lang, 'What’s going on with your vehicle?', '¿Qué le pasa a su vehículo?')}"></textarea></div>
         <button class="btn btn--primary btn--lg btn--block" type="submit">${icon('mail')}${t(lang, 'Send request', 'Enviar solicitud')}</button>

@@ -12,6 +12,10 @@
   "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Premier+Motors+LLC+309+Howard+Ave+Unit+G+Rockville+MD+20850",
   "mapEmbedUrl": "https://maps.google.com/maps?q=309+Howard+Ave+Unit+G,+Rockville,+MD+20850&z=16&output=embed",
   "reviewsWidgetHtml": "",
+  "_reviews": "Live Google reviews: set googlePlaceId + googleMapsApiKey (a browser key restricted to the site's domain, Places API (New) + Maps JavaScript API enabled). Or paste REAL Google reviews verbatim into reviews[] as { \"name\", \"text\", \"rating\", \"date\", \"url\" }. Never write or edit review text.",
+  "googlePlaceId": "",
+  "googleMapsApiKey": "",
+  "reviews": [],
   "social": [],
 
   "name": "Premier Motors",

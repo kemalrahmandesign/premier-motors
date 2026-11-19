@@ -632,3 +632,36 @@ a.util-item:hover { color: var(--gold-lt); }
 @media (max-width: 1360px) {
   .utility .util-secondary { display: none; }
 }
+
+/* ---------- Google review cards ---------- */
+.rev-summary { margin: 34px auto 0; display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; color: var(--ink); }
+.rev-score { font-family: var(--font-display); font-stretch: 116%; font-weight: 650; font-size: 44px; line-height: 1; }
+.rev-count { font-size: 17px; color: var(--ink-2); font-weight: 500; }
+.rev-grid { margin-top: 44px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.rev-card { background: #fff; border: 1px solid var(--ink-line); border-radius: var(--radius); padding: 30px 28px; display: flex; flex-direction: column; color: var(--ink); transition: transform .2s var(--ease), box-shadow .2s; }
+.rev-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(40,30,10,.10); }
+.rev-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.stars { display: inline-flex; gap: 3px; }
+.stars .icon { width: 19px; height: 19px; fill: #d9d2c3; stroke: none; }
+.stars .icon.on { fill: #c9a24a; }
+.rev-src { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+.rev-src .icon { width: 15px; height: 15px; }
+.rev-card .quote { font-size: 17px; line-height: 1.6; flex: 1; display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden; }
+.rev-foot { margin-top: 22px; display: flex; align-items: center; gap: 12px; }
+.rev-ava { width: 46px; height: 46px; border-radius: 50%; flex: none; background: #15130f; color: var(--gold); display: grid; place-items: center; font-weight: 700; font-size: 17px; object-fit: cover; }
+.rev-name { font-weight: 700; font-size: 16px; }
+.rev-name a:hover { color: var(--gold-dk); }
+.rev-meta { font-size: 13.5px; color: var(--ink-2); }
+.rev-grid + .rev-cta { margin-top: 28px; }
+@media (max-width: 960px) { .rev-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 720px) { .rev-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Form: keep inputs on one line even when a label wraps ---------- */
+.field-row { align-items: end; }
+.field input, .field select { height: 56px; }
+.field input[type="date"] { padding-block: 0; line-height: 56px; }
+.field input[type="date"]::-webkit-date-and-time-value { text-align: left; }
+.field label { min-height: 0; }
+@media (min-width: 721px) {
+  .contact .field label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}

@@ -112,7 +112,7 @@ export const vehicleTypes = ['Cars', 'Pickup trucks', 'Full-size SUVs', 'Work va
 
 export const about = [
   'Premier Motors has been serving Rockville drivers since 2003. Our owner has more than 30 years of experience in auto repair, including 24 years keeping business fleets on the road. Now we bring that same reliability to every driver who comes through our door.',
-  'From oil changes and brakes to engine work, transmissions and full body repair, our team of five handles it all under one roof. What sets us apart is simple: service and honesty on every job.',
+  'From oil changes and brakes to engine work, transmissions and full body repair, our team handles it all under one roof. What sets us apart is simple: service and honesty on every job.',
 ];
 
 export const experience = [

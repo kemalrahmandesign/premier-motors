@@ -54,7 +54,6 @@ export function business(site) {
       'Windshield replacement', 'Fleet vehicle maintenance', 'Emissions repair (VEIP)',
     ],
     currenciesAccepted: 'USD',
-    numberOfEmployees: { '@type': 'QuantitativeValue', value: 5 },
     ...(site.social?.length ? { sameAs: site.social.filter((s) => s.url).map((s) => s.url) } : {}),
     makesOffer: site.specials.map((sp) => ({
       '@type': 'Offer',

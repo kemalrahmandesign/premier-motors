@@ -233,9 +233,63 @@
     if (e.target.closest('[data-tel]') && window.gtag) window.gtag('event', 'click_to_call');
   });
 
+  /* ---------- Live Google reviews (Maps JavaScript API, Place class) ---------- */
+  function initReviews() {
+    var grid = document.querySelector('[data-google-reviews]');
+    if (!grid) return;
+    var started = false;
+    function esc(t) { var d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
+    function stars(n) {
+      var out = '<span class="stars" aria-label="' + n + ' out of 5 stars">';
+      for (var k = 1; k <= 5; k++) out += '<svg class="icon' + (k <= Math.round(n) ? ' on' : '') + '" aria-hidden="true"><use href="#i-star"></use></svg>';
+      return out + '</span>';
+    }
+    function render(place) {
+      var list = (place.reviews || []).filter(function (r) { return r && r.text; });
+      if (!list.length) return;
+      grid.innerHTML = list.slice(0, 6).map(function (r, i) {
+        var a = r.authorAttribution || {};
+        var name = a.displayName || 'Google user';
+        return '<article class="rev-card in" style="--rd:' + (i % 3) * 90 + 'ms"><div class="rev-top">' + stars(r.rating || 0) +
+          '<span class="rev-src"><svg class="icon" aria-hidden="true"><use href="#i-google"></use></svg>Google</span></div>' +
+          '<p class="quote">' + esc(r.text) + '</p><div class="rev-foot">' +
+          (a.photoURI ? '<img class="rev-ava" src="' + esc(a.photoURI) + '" alt="" width="46" height="46" loading="lazy" referrerpolicy="no-referrer">' : '<div class="rev-ava">' + esc(name.charAt(0)) + '</div>') +
+          '<div><div class="rev-name">' + (a.uri ? '<a href="' + esc(a.uri) + '" target="_blank" rel="noopener">' + esc(name) + '</a>' : esc(name)) + '</div>' +
+          '<div class="rev-meta">' + esc(r.relativePublishTimeDescription || '') + '</div></div></div></article>';
+      }).join('');
+      var sum = document.querySelector('[data-rev-summary]');
+      if (sum && place.rating) {
+        sum.innerHTML = '<span class="rev-score">' + Number(place.rating).toFixed(1) + '</span>' + stars(place.rating) +
+          '<span class="rev-count">' + (place.userRatingCount ? esc(place.userRatingCount) + ' reviews on Google' : 'on Google') + '</span>';
+        sum.hidden = false;
+      }
+      if (place.googleMapsURI) document.querySelectorAll('[data-rev-all]').forEach(function (l) { l.href = place.googleMapsURI; });
+    }
+    function load() {
+      if (started) return;
+      started = true;
+      window.__pmReviews = function () {
+        google.maps.importLibrary('places').then(function (lib) {
+          var place = new lib.Place({ id: grid.dataset.placeId });
+          return place.fetchFields({ fields: ['rating', 'userRatingCount', 'reviews', 'googleMapsURI'] }).then(function () { render(place); });
+        }).catch(function (e) { if (window.console) console.warn('Google reviews:', e && e.message); });
+      };
+      var s = document.createElement('script');
+      s.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(grid.dataset.key) + '&v=weekly&loading=async&callback=__pmReviews';
+      s.async = true;
+      document.head.appendChild(s);
+    }
+    // Only call Google when the reviews section is close to the screen (keeps API usage low).
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); load(); } }, { rootMargin: '600px 0px' });
+      io.observe(grid);
+    } else load();
+  }
+
   document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
   initMotion();
   initScrollUI();
   initStatus();
   initForm();
+  initReviews();
 })();
