@@ -1,7 +1,7 @@
 {
   "_readme": "Single source of truth for business facts and SPECIALS. Edit, then run `npm run build`. Leave a value empty (\"\") if it is not confirmed yet: the build skips anything empty instead of inventing it.",
 
-  "siteUrl": "",
+  "siteUrl": "https://premiermotorsmd.com",
   "ga4Id": "",
   "googleSiteVerification": "",
   "formEndpoint": "https://api.web3forms.com/submit",
@@ -53,7 +53,10 @@
       "regular": "120",
       "save": "Save $70",
       "saveEs": "Ahorre $70",
-      "url": "/oil-change/"
+      "url": "/oil-change/",
+      "formService": "Oil change special",
+      "fine": "Fits most cars, SUVs and light trucks. Some European, luxury and hard-to-service vehicles aren’t eligible. Call to confirm yours.",
+      "fineEs": "Aplica a la mayoría de autos, SUVs y camionetas. Algunos vehículos europeos, de lujo o de difícil acceso no califican. Llame para confirmar."
     },
     {
       "id": "inspection",
@@ -65,7 +68,8 @@
       "regular": "129.95",
       "save": "Save $30",
       "saveEs": "Ahorre $30",
-      "url": "/maryland-state-inspection/"
+      "url": "/maryland-state-inspection/",
+      "formService": "MD state inspection"
     }
   ],
   "specialsNote": "Call or stop by to schedule. Specials subject to change.",

@@ -1,6 +1,6 @@
 # Premier Motors LLC: website
 
-Preview (GitHub Pages, redeploys on every push to the branch): https://kemalrahmandesign.github.io/premier-motors/
+Live site: https://premiermotorsmd.com (GitHub Pages with a custom domain; redeploys on every push to the branch via `.github/workflows/pages.yml`). DNS at Squarespace: four A records for @ to 185.199.108-111.153 and CNAME www to kemalrahmandesign.github.io.
 The preview build is `noindex` and its robots.txt blocks crawlers, so Google won't index it before the real domain is live.
 
 Auto repair and body shop in Rockville, MD. Static site with no dependencies, built from `src/` into `dist/` by `build.mjs`. The layout follows the Marv & Mike's template, re-themed in black and brushed gold to match the logo.

@@ -101,8 +101,9 @@ export function specialCard(site, sp, lang = 'en', i = 0) {
         <span class="amt"><sup>$</sup>${d}${c ? `<sup>.${c}</sup>` : ''}</span>
         <span class="reg">${es ? 'Reg.' : 'Reg.'} <s>$${esc(sp.regular)}</s></span>
       </div>
+      ${sp.fine ? `<p class="special-fine">${esc(es ? sp.fineEs : sp.fine)}</p>` : ''}
       <div class="special-actions">
-        <a class="btn btn--primary" href="${es ? '#contacto' : '/#contact'}" data-appt data-service="Specials" data-special="${esc(sp.title)}">${icon('calendar')}${es ? 'Reservar este especial' : 'Book this special'}</a>
+        <a class="btn btn--primary" href="${es ? '#contacto' : '/#contact'}" data-appt data-service="${esc(sp.formService || '')}" data-special="${esc(sp.title)}">${icon('calendar')}${es ? 'Reservar este especial' : 'Book this special'}</a>
         <a class="btn btn--ghost" href="tel:${site.phoneE164}" data-tel>${icon('phone')}${es ? 'Llamar' : 'Call'}</a>
       </div>
     </article>`;
@@ -160,7 +161,7 @@ export function bodyWork(site, { h = 'h2', withLink = true } = {}) {
           .join('\n        ')}
       </ul>
       <div class="hero-actions" data-reveal>
-        <a class="btn btn--primary btn--lg" href="/#contact" data-appt data-service="Body work / insurance claim">${icon('doc')}Get a free estimate</a>
+        <a class="btn btn--primary btn--lg" href="/#contact" data-appt data-service="Body work / collision">${icon('doc')}Get a free estimate</a>
         <a class="btn btn--ghost btn--lg" href="tel:${site.phoneE164}" data-tel>${icon('phone')}<span>${esc(site.phone)}</span></a>
       </div>
       ${withLink ? `<a class="text-link" href="/body-shop/" data-reveal>More about our body shop ${icon('arrow-right')}</a>` : ''}
@@ -354,24 +355,8 @@ const t = (lang, en, es) => (lang === 'es' ? es : en);
 
 export function contact(site, lang = 'en') {
   const es = lang === 'es';
-  const opts = C.formServices
-    .map((s) => {
-      const label = es
-        ? {
-            Specials: 'Especiales',
-            'Body work / insurance claim': 'Carrocería / reclamo de seguro',
-            'CarMax MaxCare': 'CarMax MaxCare',
-            Maintenance: 'Mantenimiento',
-            Brakes: 'Frenos',
-            'Engine / check engine light': 'Motor / luz de check engine',
-            Transmission: 'Transmisión',
-            'A/C': 'Aire acondicionado',
-            Tires: 'Llantas',
-            Other: 'Otro',
-          }[s]
-        : s;
-      return `<option value="${esc(s)}">${esc(label)}</option>`;
-    })
+  const pills = C.formServices
+    .map(([v, esLabel], i) => `<label class="pill"><input type="checkbox" name="services" value="${esc(v)}" id="fSvc${i}"><span>${esc(es ? esLabel : v)}</span></label>`)
     .join('');
   return `<section class="section contact" id="${es ? 'contacto' : 'contact'}">
   <div class="wrap">
@@ -399,12 +384,16 @@ export function contact(site, lang = 'en') {
           <div class="field"><label for="fPhone">${t(lang, 'Phone', 'Teléfono')} <em>*</em></label><input id="fPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
         </div>
         <div class="field-row">
-          <div class="field"><label for="fEmail">Email</label><input id="fEmail" name="email" type="email" autocomplete="email"></div>
+          <div class="field"><label for="fEmail">${t(lang, 'Email <span class="opt">(preferred)</span>', 'Correo <span class="opt">(preferido)</span>')}</label><input id="fEmail" name="email" type="email" autocomplete="email"></div>
           <div class="field"><label for="fVehicle">${t(lang, 'Vehicle', 'Vehículo')}</label><input id="fVehicle" name="vehicle" type="text" placeholder="${t(lang, 'Year, make, model', 'Año, marca, modelo')}"></div>
         </div>
+        <fieldset class="field pills-field">
+          <legend>${t(lang, 'What do you need?', '¿Qué necesita?')} <span class="opt">${t(lang, 'Pick all that apply', 'Elija todos los que apliquen')}</span></legend>
+          <div class="pills">${pills}</div>
+        </fieldset>
         <div class="field-row">
-          <div class="field"><label for="fService">${t(lang, 'Service needed', 'Servicio')}</label><select id="fService" name="service"><option value="">${t(lang, 'Choose a service', 'Elija un servicio')}</option>${opts}</select></div>
           <div class="field"><label for="fDate">${t(lang, 'Preferred date', 'Fecha preferida')}</label><input id="fDate" name="preferred_date" type="date"></div>
+          <div class="field form-req"><p>${t(lang, '<em>*</em> Only name and phone are required.', '<em>*</em> Solo se requiere nombre y teléfono.')}</p></div>
         </div>
         <div class="field"><label for="fMsg">${t(lang, 'Message', 'Mensaje')}</label><textarea id="fMsg" name="message" rows="4" placeholder="${t(lang, 'What’s going on with your vehicle?', '¿Qué le pasa a su vehículo?')}"></textarea></div>
         <button class="btn btn--primary btn--lg btn--block" type="submit">${icon('mail')}${t(lang, 'Send request', 'Enviar solicitud')}</button>

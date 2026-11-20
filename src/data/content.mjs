@@ -141,6 +141,22 @@ export const faq = [
   ['¿Hablan español?', 'Sí. Se habla español. Llámenos al (301) 340-2130.'],
 ];
 
+// Pill options on the appointment form (customers can pick several). [value sent in the email, Spanish label]
 export const formServices = [
-  'Specials', 'Body work / insurance claim', 'CarMax MaxCare', 'Maintenance', 'Brakes', 'Engine / check engine light', 'Transmission', 'A/C', 'Tires', 'Other',
+  ['Oil change special', 'Especial de cambio de aceite'],
+  ['MD state inspection', 'Inspección estatal de MD'],
+  ['CarMax MaxCare', 'CarMax MaxCare'],
+  ['Body work / collision', 'Carrocería / choque'],
+  ['Insurance claim', 'Reclamo de seguro'],
+  ['Paint / dents', 'Pintura / abolladuras'],
+  ['Glass', 'Vidrios'],
+  ['Maintenance', 'Mantenimiento'],
+  ['Brakes', 'Frenos'],
+  ['Check engine light', 'Luz de check engine'],
+  ['Engine', 'Motor'],
+  ['Transmission', 'Transmisión'],
+  ['A/C', 'Aire acondicionado'],
+  ['Tires', 'Llantas'],
+  ['Fleet / work vans', 'Flotillas / vans de trabajo'],
+  ['Other', 'Otro'],
 ];

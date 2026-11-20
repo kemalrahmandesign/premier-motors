@@ -665,3 +665,27 @@ a.util-item:hover { color: var(--gold-lt); }
 @media (min-width: 721px) {
   .contact .field label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 }
+
+/* Multi-select service pills */
+.pills-field { border: 0; padding: 0; margin: 4px 0 20px; min-width: 0; }
+.pills-field legend { display: block; width: 100%; padding: 0; font-family: var(--font-label); font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--text-2); margin-bottom: 12px; }
+.opt { font-family: var(--font-body); letter-spacing: 0; text-transform: none; font-size: 14px; color: #8d877b; margin-left: 6px; }
+.field label .opt { white-space: nowrap; }
+.pills { display: flex; flex-wrap: wrap; gap: 10px; }
+.pill { position: relative; display: inline-flex; cursor: pointer; }
+.pill input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.pill span { display: inline-flex; align-items: center; gap: 8px; padding: 10px 17px; border: 1px solid var(--line-2); border-radius: 999px; background: #0b0a09; color: var(--text); font-size: 16.5px; line-height: 1.2; transition: background .15s, border-color .15s, color .15s; user-select: none; }
+.pill span::before { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #6b655a; flex: none; transition: inherit; }
+.pill:hover span { border-color: var(--gold); }
+.pill input:checked + span { background: linear-gradient(120deg, #f3e8c4, #c9ae78 55%, #a98b56); border-color: transparent; color: #0a0a0a; font-weight: 650; }
+.pill input:checked + span::before { border-color: #0a0a0a; background: #0a0a0a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e4d4a6' stroke-width='4'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E") center/10px no-repeat; }
+.pill input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 3px; }
+.form-req p { margin: 0; color: #8d877b; font-size: 15px; line-height: 56px; }
+.form-req em { color: var(--gold); font-style: normal; }
+.book-form.sent .pills-field { display: none; }
+@media (max-width: 720px) {
+  .pill span { font-size: 15px; padding: 9px 14px; }
+  .form-req p { line-height: 1.4; margin-top: -6px; }
+}
+.special-fine { font-size: 14.5px; line-height: 1.45; color: #8d877b; margin: 12px 0 0; }
+.pills-field .pill { display: inline-flex; margin: 0; font-family: var(--font-body); font-size: inherit; letter-spacing: 0; text-transform: none; color: inherit; white-space: normal; overflow: visible; min-height: 0; }

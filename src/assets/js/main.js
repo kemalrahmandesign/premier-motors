@@ -157,21 +157,27 @@
     if (!form) return;
     var es = form.dataset.lang === 'es';
     var status = document.getElementById('formStatus');
-    var select = form.querySelector('[name="service"]');
+    var boxes = Array.prototype.slice.call(form.querySelectorAll('[name="services"]'));
+    // Tick one or more services; a link can pass several separated by "|".
+    function pick(list) {
+      String(list || '').split('|').forEach(function (v) {
+        boxes.forEach(function (b) { if (b.value === v.trim()) b.checked = true; });
+      });
+    }
     var msg = form.querySelector('[name="message"]');
     var date = form.querySelector('[name="preferred_date"]');
     if (date) { try { date.min = new Date().toISOString().slice(0, 10); } catch (e) {} }
     // Service pages link here as /?service=Brakes#contact: pre-select that service.
     try {
       var want = new URLSearchParams(location.search).get('service');
-      if (want && select && Array.prototype.some.call(select.options, function (o) { return o.value === want; })) select.value = want;
+      if (want) pick(want);
     } catch (e) {}
 
     // "Book this special" / "Get a free estimate" buttons pre-fill the service.
     document.addEventListener('click', function (e) {
       var a = e.target.closest('[data-service]');
-      if (!a || !select) return;
-      select.value = a.dataset.service;
+      if (!a) return;
+      pick(a.dataset.service);
       if (a.dataset.special && msg && !msg.value) msg.value = (es ? 'Me interesa el especial: ' : 'I’d like to book the special: ') + a.dataset.special;
     });
 
@@ -198,7 +204,9 @@
       }
 
       var data = {};
-      new FormData(form).forEach(function (v, k) { if (k !== 'botcheck') data[k] = v; });
+      new FormData(form).forEach(function (v, k) { if (k !== 'botcheck' && k !== 'services') data[k] = v; });
+      var chosen = boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; });
+      data.services = chosen.length ? chosen.join(', ') : (es ? 'No especificado' : 'Not specified');
       if (data.email) data.replyto = data.email;
       var btn = form.querySelector('button[type="submit"]');
       btn.disabled = true;

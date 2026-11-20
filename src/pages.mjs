@@ -254,7 +254,7 @@ export default function pages(site) {
             kicker: 'Maryland State Safety Inspection',
             h1: 'Maryland State Inspection in Rockville, MD',
             lede: 'Buying a used car or registering a vehicle in Maryland? Get your Maryland State Safety Inspection done at Premier Motors, and if anything needs fixing to pass, our shop can handle it.',
-            actions: apptBtn('Book your inspection', 'Specials') + callBtn(site),
+            actions: apptBtn('Book your inspection', 'MD state inspection') + callBtn(site),
             side: `<div class="special-solo">${X.specialCard(site, sp)}<p class="specials-note">${esc(site.specialsNote)}</p></div>`,
           }),
           prose([
@@ -273,22 +273,25 @@ export default function pages(site) {
     (() => {
       const sp = site.specials.find((s) => s.id === 'oil');
       const f = [
-        ['What’s included in the oil change special?', `An oil change with up to 5 quarts of full synthetic oil, a new oil filter and a tire rotation for $${sp.price} (regular $${sp.regular}). Specials are subject to change. Call for details.`],
+        ['How much is an oil change in Rockville at Premier Motors?', `Our oil change special is $${sp.price} (regular $${sp.regular}) and includes up to 5 quarts of full synthetic oil, a new oil filter and a tire rotation. Specials are subject to change. Call ${site.phone} for details.`],
+        [`Does the $${sp.price} oil change special fit my car?`, 'It fits most cars, SUVs and light trucks. Some European, luxury and hard-to-service vehicles aren’t eligible for the special. Call us with your year, make and model and we’ll confirm, or tell you the price for your vehicle.'],
+        ['Do I need a coupon?', 'No. Just ask for the oil change special when you call, stop by or request an appointment online.'],
+        ['Is it really full synthetic oil?', 'Yes. The special includes up to 5 quarts of full synthetic oil and a new oil filter, plus a tire rotation in the same visit.'],
         ['Do you do conventional oil changes too?', 'Yes. We do conventional and synthetic oil changes, plus scheduled maintenance at 30k, 60k and 90k miles.'],
         ['Do I need an appointment?', 'Appointments and walk-ins are both welcome. Most oil changes are done the same day.'],
       ];
       return {
         path: '/oil-change/',
         out: 'oil-change/index.html',
-        title: `$${sp.price} Oil Change Special in Rockville, MD | Premier Motors`,
-        description: `$${sp.price} oil change special in Rockville, MD: up to 5 qt full synthetic, new filter and tire rotation (reg. $${sp.regular}). Walk-ins welcome. Call (301) 340-2130.`,
-        priority: '0.8',
+        title: `$${sp.price} Oil Change in Rockville, MD | Synthetic Oil Special`,
+        description: `Affordable oil change in Rockville, MD: $${sp.price} for up to 5 qt full synthetic, new filter and tire rotation (reg. $${sp.regular}). Most vehicles. Call (301) 340-2130.`,
+        priority: '0.9',
         schema: [
           biz,
           S.service(site, {
             name: 'Oil Change + Filter + Tire Rotation',
             serviceType: 'Oil change',
-            description: 'Oil change with up to 5 quarts of full synthetic oil, new filter and tire rotation.',
+            description: `Discount full synthetic oil change special in Rockville, MD: up to 5 quarts of full synthetic oil, new filter and tire rotation. ${sp.fine}`,
             path: '/oil-change/',
             offer: sp,
           }),
@@ -299,14 +302,15 @@ export default function pages(site) {
           X.pageHero({
             crumbs: [['/', 'Home'], ['', 'Oil Change Special']],
             kicker: 'Oil change special · Rockville, MD',
-            h1: 'Oil Change Special in Rockville, MD',
-            lede: 'Full synthetic oil change, new filter and a tire rotation in one visit. It’s the easiest way to keep your engine healthy and your tires wearing evenly.',
-            actions: apptBtn('Book this special', 'Specials') + callBtn(site),
+            h1: `$${sp.price} Oil Change Special in Rockville, MD`,
+            lede: `Looking for a cheap oil change that doesn’t cut corners? Get up to 5 quarts of full synthetic oil, a new filter and a tire rotation for $${sp.price}, a $${sp.regular} value, at an honest local shop that’s been in Rockville since 2003.`,
+            actions: apptBtn('Book this special', 'Oil change special') + callBtn(site),
             side: `<div class="special-solo">${X.specialCard(site, sp)}<p class="specials-note">${esc(site.specialsNote)}</p></div>`,
           }),
           prose([
-            { icon: 'oil', title: 'Full synthetic oil', paras: ['Up to 5 quarts of full synthetic oil and a new oil filter.'] },
+            { icon: 'oil', title: 'Full synthetic, not the cheap stuff', paras: ['Up to 5 quarts of full synthetic oil and a new oil filter. It’s a discount price on a quality oil change, not a stripped-down one.'] },
             { icon: 'tire', title: 'Tire rotation included', paras: ['We rotate your tires in the same visit to help them wear evenly and last longer.'] },
+            { icon: 'car', title: 'Fits most vehicles', paras: [sp.fine] },
             { icon: 'clipboard', title: 'Scheduled maintenance', paras: ['Coming up on 30k, 60k or 90k miles? We handle scheduled maintenance, fluids, filters, belts and tune-ups too.'] },
           ]),
           X.faq(f, 'Oil change questions.'),
@@ -363,7 +367,7 @@ export default function pages(site) {
         <li data-reveal><span class="bw-ic">${icon('glass')}</span><div><h3>Parabrisas y vidrios</h3><p>Reemplazo de parabrisas y vidrios rotos.</p></div></li>
       </ul>
       <div class="hero-actions" data-reveal>
-        <a class="btn btn--primary btn--lg" href="#contacto" data-appt data-service="Body work / insurance claim">${icon('doc')}Presupuesto gratis</a>
+        <a class="btn btn--primary btn--lg" href="#contacto" data-appt data-service="Body work / collision">${icon('doc')}Presupuesto gratis</a>
         ${callBtn(site)}
       </div>
     </div>

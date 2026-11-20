@@ -1,7 +1,8 @@
-name: Deploy preview to GitHub Pages
+name: Deploy site to GitHub Pages
 
-# Public test link: https://kemalrahmandesign.github.io/premier-motors/
-# Built with PREVIEW=1 so Google doesn't index the preview before the real domain is live.
+# Live site: https://premiermotorsmd.com (custom domain set in repo Settings > Pages).
+# Production build: no base path, indexable, canonical URLs on premiermotorsmd.com.
+# For a no-index test build in a sub-folder instead, set BASE_PATH=/premier-motors and PREVIEW='1'.
 on:
   push:
     branches: [claude/peaceful-dijkstra-bfokug]
@@ -32,10 +33,7 @@ jobs:
           node-version: 22
 
       - name: Build site
-        run: node build.mjs
-        env:
-          BASE_PATH: /premier-motors
-          PREVIEW: '1'
+        run: node build.mjs && echo premiermotorsmd.com > dist/CNAME
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
