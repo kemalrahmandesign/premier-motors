@@ -13,9 +13,18 @@ const head = ({ eyebrow, title, accent = '', text = '', center = false, light = 
 
 // Brand panel where a photo goes. With a photo (site.json heroImage / aboutImage) it shows the
 // photo under a black-and-gold grade; without one it shows the logo mark on the gold gauge.
-export const photoFrame = (src, alt, extraClass = '') => `
+// <img> for a photo key from content.mjs (responsive srcset), or a plain path.
+export function photoImg(key, { cls = '', alt = '', sizes = '(max-width: 900px) 100vw, 50vw', lazy = true } = {}) {
+  const ph = C.photos[key];
+  if (!ph) return `<img class="${cls}" src="${esc(key)}" alt="${esc(alt)}"${lazy ? ' loading="lazy"' : ''}>`;
+  const big = ph.w[ph.w.length - 1];
+  const srcset = ph.w.map((w) => `${ph.base}-${w}.webp ${w}w`).join(', ');
+  return `<img class="${cls}" src="${ph.base}-${big}.webp" srcset="${srcset}" sizes="${sizes}" width="${big}" height="${ph.h}" alt="${esc(alt || ph.alt)}" style="object-position:${ph.pos}"${lazy ? ' loading="lazy" decoding="async"' : ' fetchpriority="high"'}>`;
+}
+
+export const photoFrame = (src, alt, extraClass = '', lazy = false) => `
       <div class="frame frame--brand frame--photo ${extraClass}">
-        <img class="frame-photo" src="${src}" alt="${esc(alt)}" width="1200" height="1500" fetchpriority="high">
+        ${photoImg(src, { cls: 'frame-photo', alt: C.photos[src] ? '' : alt, lazy })}
         <span class="frame-grade" aria-hidden="true"></span>
         <span class="sweep" aria-hidden="true"></span>
       </div>`;
@@ -285,7 +294,7 @@ export function about(site = {}) {
   return `<section class="section about" id="about">
   <div class="wrap">
     <div class="about-media" data-reveal="left">
-      ${site.aboutImage ? photoFrame(site.aboutImage, 'Inside the Premier Motors shop in Rockville, MD', 'frame--about') : `<div class="frame frame--brand frame--about">
+      ${site.aboutImage ? photoFrame(site.aboutImage, 'Inside the Premier Motors shop in Rockville, MD', 'frame--about', true) : `<div class="frame frame--brand frame--about">
         <img class="frame-logo" src="/assets/img/logo-full.webp" alt="Premier Motors LLC logo" width="1098" height="533" loading="lazy">
         <span class="sweep" aria-hidden="true"></span>
       </div>`}
@@ -417,6 +426,7 @@ export function contact(site, lang = 'en') {
       <div class="info-card">
         <h3>${t(lang, 'Visit us', 'Visítenos')}</h3>
         <div class="info-line">${icon('pin')}<div class="it"><strong>${esc(site.address.street)}</strong><span>${esc(site.address.city)}, ${esc(site.address.region)} ${esc(site.address.postalCode)} · ${t(lang, 'Unit G office', 'Oficina de la Unidad G')}</span></div></div>
+        ${C.photos.sign ? `<figure class="visit-sign">${photoImg('sign', { sizes: '(max-width: 900px) 90vw, 420px' })}<figcaption>${icon('pin')}${t(lang, 'Look for our sign on Howard Ave.', 'Busque nuestro letrero en Howard Ave.')}</figcaption></figure>` : ''}
         <div class="info-line">${icon('cash')}<div class="it"><strong>${t(lang, 'Payment', 'Pago')}</strong><span>${t(lang, 'All major credit cards and cash', 'Todas las tarjetas de crédito principales y efectivo')}</span></div></div>
         <div class="map">
           <iframe title="${t(lang, 'Map to Premier Motors', 'Mapa a Premier Motors')}" src="${esc(site.mapEmbedUrl)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -447,3 +457,16 @@ export function pageHero({ crumbs, h1, lede, kicker, actions = '', side = '' }) 
 }
 
 export { head as sectionHead };
+
+// Full-width photo band between sections.
+export function photoBand(key, caption = '') {
+  return `<section class="photo-band">
+  <div class="wrap">
+    <figure class="band-frame" data-reveal="scale">
+      ${photoImg(key, { cls: 'band-photo', sizes: '(max-width: 1400px) 100vw, 1400px' })}
+      <span class="frame-grade" aria-hidden="true"></span>
+      ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+    </figure>
+  </div>
+</section>`;
+}

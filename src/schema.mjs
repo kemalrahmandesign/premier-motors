@@ -15,7 +15,7 @@ export function business(site) {
     alternateName: site.name,
     description:
       'Auto repair and body shop in Rockville, MD since 2003. Mechanical repair, collision repair, auto painting, Maryland State Safety Inspections and more. All insurance accepted.',
-    ...(b ? { url: `${b}/`, image: `${b}/assets/img/og-image.jpg`, logo: `${b}/assets/img/icon-512.png` } : {}),
+    ...(b ? { url: `${b}/`, image: [`${b}/assets/img/shop-bays-1600.webp`, `${b}/assets/img/body-shop-sign-1600.webp`, `${b}/assets/img/shop-sign-720.webp`, `${b}/assets/img/og-image.jpg`], logo: `${b}/assets/img/icon-512.png` } : {}),
     telephone: site.phoneE164,
     email: site.email,
     foundingDate: String(site.founded),

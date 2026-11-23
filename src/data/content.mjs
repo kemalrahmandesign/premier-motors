@@ -160,3 +160,12 @@ export const formServices = [
   ['Fleet / work vans', 'Flotillas / vans de trabajo'],
   ['Other', 'Otro'],
 ];
+
+// Real shop photos (src/assets/img/<base>-<width>.webp). heroImage / aboutImage in site.json name one of these keys.
+export const photos = {
+  bays: { base: '/assets/img/shop-bays', w: [900, 1600], h: 1067, alt: 'Service bays with two-post lifts inside Premier Motors, Rockville, MD', pos: '50% 55%' },
+  tools: { base: '/assets/img/shop-tools', w: [800, 1400], h: 934, alt: 'Technician tool chest in the Premier Motors shop', pos: '62% 50%' },
+  bodySign: { base: '/assets/img/body-shop-sign', w: [900, 1600], h: 720, alt: 'Premier Motors Body Shop sign at 309 Howard Ave, Rockville, MD', pos: '50% 92%' },
+  board: { base: '/assets/img/service-board', w: [900, 1600], h: 1067, alt: 'Shop service board: 30K, 60K and 90K service, diagnostic, A/C check, oil and filter', pos: '40% 45%' },
+  sign: { base: '/assets/img/shop-sign', w: [720], h: 420, alt: 'Premier Motors sign outside the shop on Howard Ave, Rockville', pos: '50% 50%' },
+};

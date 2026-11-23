@@ -160,9 +160,10 @@ export default function pages(site) {
           kicker: 'Body shop · Rockville, MD',
           h1: 'Body Shop &amp; Collision Repair in Rockville, MD',
           lede: 'Collision repair, dent repair, auto painting and glass, done right under the same roof as our mechanical shop. We work with all insurance companies and accept all CarMax MaxCare coverage.',
-          actions: apptBtn('Get a free estimate', 'Body work / insurance claim') + callBtn(site),
+          actions: apptBtn('Get a free estimate', 'Body work / collision|Insurance claim') + callBtn(site),
           side: `<div class="ins-stack">${X.insuranceCards(site)}</div>`,
         }),
+        X.photoBand('bodySign', 'Our body shop on Howard Ave, Rockville'),
         prose(BW.map((b) => ({ icon: b.icon, title: b.title, paras: [b.text] }))),
         `<section class="section steps-sec light">
   <div class="wrap">
@@ -212,6 +213,7 @@ export default function pages(site) {
             <div><b>Same day</b><span>On most common jobs</span></div>
           </div>`,
         }),
+        X.photoBand('board', 'Scheduled service, diagnostics, A/C and oil changes'),
         X.services({ full: true }),
         X.vehicles(),
         X.why(),
@@ -307,6 +309,7 @@ export default function pages(site) {
             actions: apptBtn('Book this special', 'Oil change special') + callBtn(site),
             side: `<div class="special-solo">${X.specialCard(site, sp)}<p class="specials-note">${esc(site.specialsNote)}</p></div>`,
           }),
+          X.photoBand('board', 'Oil &amp; filter, 30K / 60K / 90K service and more'),
           prose([
             { icon: 'oil', title: 'Full synthetic, not the cheap stuff', paras: ['Up to 5 quarts of full synthetic oil and a new oil filter. It’s a discount price on a quality oil change, not a stripped-down one.'] },
             { icon: 'tire', title: 'Tire rotation included', paras: ['We rotate your tires in the same visit to help them wear evenly and last longer.'] },
