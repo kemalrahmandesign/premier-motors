@@ -20,7 +20,7 @@ from pathlib import Path
 
 import segno
 
-DEFAULT = 'https://www.google.com/maps/search/?api=1&query=Premier+Motors+LLC+309+Howard+Ave+Unit+G+Rockville+MD+20850'
+DEFAULT = 'https://premiermotorsmd.com/review/'
 url = sys.argv[1] if len(sys.argv) > 1 else DEFAULT
 out = Path(__file__).resolve().parent.parent / 'docs' / 'reviews'
 out.mkdir(parents=True, exist_ok=True)
@@ -89,7 +89,42 @@ p{{font-size:12.5px;line-height:1.45;color:#b8b1a3;margin-top:.22in;max-width:3.
   <div class="bar gold"></div>
 </div></body></html>"""
 
+# Full-page flyer (US Letter). White background so it prints cleanly on any office printer.
+flyer = f"""<!doctype html><html><head><meta charset="utf-8"><title>Review flyer</title>{FONTS}<style>{BASE_CSS}
+@page{{size:8.5in 11in;margin:0}}
+.page{{width:8.5in;height:11in;background:#fff;color:#0a0a0a;padding:.55in .7in .5in;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}}
+.page:before{{content:"";position:absolute;inset:.32in;border:1.5px solid #c9ae78;border-radius:.2in}}
+.top{{position:absolute;left:.32in;right:.32in;top:.32in;height:.12in;border-radius:.2in .2in 0 0}}
+.logo-wrap{{background:#0a0a0a;border-radius:.16in;padding:.2in .42in;margin-top:.3in}}
+.logo{{width:2.6in;height:auto;display:block}}
+.label{{font-size:10px;color:#8a6d3b;margin-top:.34in}}
+h1{{font-size:58px;line-height:1;font-stretch:118%;font-weight:700;letter-spacing:-.025em;margin-top:.14in}}
+h1 span{{display:block;font-size:34px;font-weight:600;margin-top:.08in;background:linear-gradient(120deg,#b8955a,#8a6d3b 60%,#6f5629);-webkit-background-clip:text;background-clip:text;color:transparent}}
+.qr-box{{width:3.7in;height:3.7in;padding:.16in;margin-top:.34in;border:2px solid #0a0a0a;border-radius:.22in;background:#fff}}
+.steps{{display:flex;gap:.22in;margin-top:.34in;text-align:left}}
+.step{{display:flex;gap:.1in;align-items:flex-start;width:2.1in}}
+.n{{flex:none;width:.32in;height:.32in;border-radius:50%;background:#0a0a0a;color:#e4d4a6;font-weight:700;font-size:14px;display:grid;place-items:center}}
+.step p{{font-size:13.5px;line-height:1.35;color:#2b2a27}}
+.es{{font-size:14px;color:#55524c;margin-top:.26in;max-width:6in}}
+.foot{{position:absolute;bottom:.52in;left:0;right:0;font-size:13px;color:#2b2a27;letter-spacing:.02em}}
+.foot b{{font-weight:700}}
+</style></head><body><div class="page">
+  <div class="top gold"></div>
+  <div class="logo-wrap"><img class="logo" src="../../src/assets/img/logo-full.png" alt="Premier Motors LLC"></div>
+  <div class="label">Thank you for choosing Premier Motors</div>
+  <h1>Leave us a review<span>on Google</span></h1>
+  <div class="qr-box">{svg_inline}</div>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><p>Open the camera on your phone.</p></div>
+    <div class="step"><div class="n">2</div><p>Point it at the code and tap the link.</p></div>
+    <div class="step"><div class="n">3</div><p>Pick your stars and share how it went.</p></div>
+  </div>
+  <p class="es">¿Le gustó nuestro servicio? Escanee el código y déjenos una reseña en Google. ¡Gracias!</p>
+  <div class="foot"><b>Premier Motors</b> · 309 Howard Ave, Unit G, Rockville, MD · (301) 340-2130 · premiermotorsmd.com</div>
+</div></body></html>"""
+
 (out / 'card.html').write_text(card)
 (out / 'sign.html').write_text(sign)
+(out / 'flyer.html').write_text(flyer)
 print('QR ->', url)
 print('wrote', ', '.join(p.name for p in sorted(out.iterdir())))

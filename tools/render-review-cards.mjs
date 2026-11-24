@@ -10,6 +10,7 @@ const dir = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'reviews
 const jobs = [
   { file: 'card.html', w: 3.5, h: 2, out: 'review-card' },
   { file: 'sign.html', w: 5, h: 7, out: 'review-sign-5x7' },
+  { file: 'flyer.html', w: 8.5, h: 11, out: 'review-flyer-letter' },
 ];
 const browser = await chromium.launch();
 for (const j of jobs) {

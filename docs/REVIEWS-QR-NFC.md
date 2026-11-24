@@ -12,7 +12,7 @@ Reference for us, not for the website. **Goal: every customer is asked for a Goo
 | **As soon as his Google Business Profile is verified** | The direct review link (opens the star-rating box right away). In the GBP dashboard: **Ask for reviews / Get more reviews → copy link**. It looks like `https://g.page/r/XXXXXXXX/review`. |
 | **After the domain is live** | `https://DOMAIN/review/`. Our site forwards it to the review link, so we can change the destination later **without reprinting cards or reprogramming tags**. |
 
-The QR in `docs/reviews/` currently uses the **interim** link. Before printing in volume, scan it with a phone and confirm it opens the Premier Motors listing. If the search opens a list of results instead of his listing, use the GBP review link as soon as it exists.
+**Current setup (domain is live):** every QR code and printout in `docs/reviews/` opens `https://premiermotorsmd.com/review/`, which forwards to `googleReviewUrl` in `site.json` (or the Maps listing until that's filled in). To switch to the direct review link, just paste it into `googleReviewUrl` and push. **No reprinting, no reprogramming.** Program NFC tags with the same `premiermotorsmd.com/review/` link.
 
 When the review link exists, also paste it into `googleReviewUrl` in `src/data/site.json` so the site's "Leave a review" button and `/review/` use it.
 
@@ -24,12 +24,13 @@ When the review link exists, also paste it into `googleReviewUrl` in `src/data/s
 | --- | --- |
 | `review-qr.png` / `review-qr.svg` | The QR on its own: invoices, receipts, window decal, email signature |
 | `review-card.pdf` (3.5 × 2 in) | Business-card size handout. Give one back with the keys on every job. Any print shop or Vistaprint "standard business card" |
+| `review-flyer-letter.pdf` (8.5 × 11 in) | Full-page "Leave us a review" flyer. White background, prints fine on any office printer. Tape at the counter, in the waiting area, by the key drop |
 | `review-sign-5x7.pdf` (5 × 7 in) | Counter / waiting-area sign in an acrylic stand; one by the key drop |
 | `review-link.txt` | The exact link the QR opens |
 
-**Regenerate after the link changes** (takes 10 seconds):
+**Regenerate** (only needed if the design changes; the link already forwards):
 ```bash
-python3 tools/make-review-qr.py "https://g.page/r/XXXXXXXX/review"
+python3 tools/make-review-qr.py            # defaults to https://premiermotorsmd.com/review/
 ```
 ```bash
 node tools/render-review-cards.mjs
