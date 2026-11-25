@@ -181,6 +181,42 @@
       if (a.dataset.special && msg && !msg.value) msg.value = (es ? 'Me interesa el especial: ' : 'I’d like to book the special: ') + a.dataset.special;
     });
 
+    // ---- Spam defenses (no captcha, nothing extra for real customers) ----
+    // 1) honeypot "botcheck"  2) a real person touched the form and took a few seconds
+    // 3) sales-pitch score: high = silently dropped (sender still sees "Thank you"),
+    //    medium = delivered with "[Possible spam]" in the subject so a real customer is never lost.
+    var loadedAt = Date.now(), touched = false;
+    ['keydown', 'input', 'pointerdown', 'touchstart', 'paste'].forEach(function (ev) {
+      form.addEventListener(ev, function () { touched = true; }, { passive: true, once: true });
+    });
+    var SPAM_RULES = [
+      [3, /opt[\s-]?out|reply\s+["“]?(yes|stop)\b|\bunsubscribe\b|\bstop to\b|\bto opt\b/i],
+      [2, /\bzoom\b|\b\d{1,2}[\s-]?min(ute)?s?\b[^.]{0,20}\bcall\b|\b(quick|short|brief) (call|chat)\b/i],
+      [2, /[Vv]irtual ([Aa]ssistant|[Hh]and)|\bVA\b|\bAI\b|[Aa]rtificial [Ii]ntelligence|[Cc]hat\s?GPT|\b[Aa]utomat(e|ion)\b/],
+      [2, /\bSEO\b|backlinks?|search engine|first page of google|google (ranking|maps ranking)|rank (higher|your)|lead[\s-]?gen|more (leads|customers|clients)|marketing (agency|services)/i],
+      [2, /web\s?(site)? ?(design|redesign|development|developer)|app development|social media (management|marketing)/i],
+      [2, /(free for|first|free) \d+ days|free trial|no obligation|limited time/i],
+      [2, /\b(funding|loan|merchant|cash advance|credit line|invoice factoring|crypto|bitcoin|investment opportunity)\b/i],
+      [1, /https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|io|co|ai|biz)\/\S*/i],
+      [1, /\byour (website|site|online presence|google (listing|profile)|business listing)\b/i],
+      [1, /[\w.+-]+@[\w-]+\.[\w.]+/],
+      [1, /per (accepted )?(hour|month|worker)|\$\d[\d,]*\s*(per|\/)\s*(month|hour)/i],
+      [1, /\b(our|my) (company|agency|team|firm) (helps|works with|specializes)|\bbusiness owners?\b|\bpartnership\b/i],
+    ];
+    function spamScore(d, chosen) {
+      var text = [d.message, d.name, d.vehicle].join(' ');
+      var s = 0;
+      SPAM_RULES.forEach(function (r) { if (r[1].test(text)) s += r[0]; });
+      if ((d.message || '').length > 450) s += 1;
+      if (!d.vehicle && !chosen.length) s += 1;
+      return s;
+    }
+    function fakeSuccess() {
+      form.classList.add('sent');
+      status.className = 'form-status';
+      status.textContent = es ? '¡Gracias! Recibimos su solicitud.' : 'Thank you! We got your request.';
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var name = form.querySelector('[name="name"]');
@@ -195,7 +231,8 @@
         status.textContent = es ? 'Por favor escriba su nombre y un número de teléfono válido.' : 'Please enter your name and a valid phone number.';
         return;
       }
-      if (form.querySelector('[name="botcheck"]').checked) return;
+      if (form.querySelector('[name="botcheck"]').checked) return fakeSuccess();
+      if (!touched || Date.now() - loadedAt < 3000) return fakeSuccess();
       if (!PM.formReady) {
         status.className = 'form-status error';
         status.innerHTML = (es ? 'El formulario aún no está conectado. Llámenos al ' : 'Online requests aren\u2019t connected yet. Please call us at ') + '<a href="tel:+13013402130"><u>(301) 340-2130</u></a>.';
@@ -207,6 +244,9 @@
       new FormData(form).forEach(function (v, k) { if (k !== 'botcheck' && k !== 'services') data[k] = v; });
       var chosen = boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; });
       data.services = chosen.length ? chosen.join(', ') : (es ? 'No especificado' : 'Not specified');
+      var score = spamScore(data, chosen);
+      if (score >= 4) return fakeSuccess();
+      if (score >= 2) data.subject = '[Possible spam] ' + data.subject;
       if (data.email) data.replyto = data.email;
       var btn = form.querySelector('button[type="submit"]');
       btn.disabled = true;
