@@ -49,7 +49,7 @@ export function hero(site) {
   return `<section class="hero">
   <div class="wrap">
     <div class="hero-copy">
-      <h1 class="eyebrow hero-kicker" data-reveal>Auto Repair &amp; Body Shop in Rockville, MD</h1>
+      <h1 class="eyebrow hero-kicker" data-reveal>Car Repair &amp; Body Shop in Rockville, MD</h1>
       <p class="hero-title split" data-accent="honest">Premier care. Honest work.</p>
       <p class="hero-lede" data-reveal style="--rd:200ms">Mechanical repair and full body work under one roof, serving Rockville drivers since 2003. All insurance accepted, free estimates, and same-day service on most common jobs.</p>
       <div class="hero-actions" data-reveal style="--rd:300ms">

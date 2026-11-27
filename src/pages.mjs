@@ -111,9 +111,9 @@ export default function pages(site) {
     {
       path: '/',
       out: 'index.html',
-      title: 'Premier Motors | Auto Repair & Body Shop in Rockville, MD',
+      title: 'Car Repair & Body Shop in Rockville, MD | Premier Motors',
       description:
-        'Rockville, MD auto repair & body shop since 2003. Oil change & MD inspection specials. All insurance & CarMax MaxCare accepted. Call (301) 340-2130.',
+        'Trusted car repair & body shop in Rockville, MD since 2003. $49.99 oil change, MD inspections, all insurance & CarMax MaxCare. Call (301) 340-2130.',
       alternates: [['en', '/'], ['es', '/es/'], ['x-default', '/']],
       priority: '1.0',
       schema: [biz, S.website(site), S.faqPage()],
@@ -185,9 +185,9 @@ export default function pages(site) {
     {
       path: '/auto-repair/',
       out: 'auto-repair/index.html',
-      title: 'Auto Repair in Rockville, MD | Premier Motors',
+      title: 'Car & Auto Repair in Rockville, MD | Premier Motors',
       description:
-        'Auto repair in Rockville, MD: brakes, check engine light, engine, transmission, A/C, tires and maintenance. Free estimates. Call (301) 340-2130.',
+        'Car repair in Rockville, MD: brakes, check engine light, engine, transmission, A/C, tires and maintenance. Free estimates. Call (301) 340-2130.',
       priority: '0.9',
       schema: [
         biz,
@@ -203,8 +203,8 @@ export default function pages(site) {
         X.pageHero({
           crumbs: [['/', 'Home'], ['', 'Auto Repair']],
           kicker: 'Mechanical repair · Rockville, MD',
-          h1: 'Auto Repair Services in Rockville, MD',
-          lede: 'From oil changes and brakes to check engine lights, engine work and transmissions, our team handles it all. Free estimates and same-day service on most common jobs.',
+          h1: 'Car & Auto Repair in Rockville, MD',
+          lede: 'Looking for an honest car repair shop in Rockville? From oil changes and brakes to check engine lights, engine work and transmissions, our mechanics handle it all. Free estimates and same-day service on most common jobs.',
           actions: apptBtn() + callBtn(site),
           side: `<div class="mini-stats">
             <div><b>30+</b><span>Years of auto repair experience</span></div>
