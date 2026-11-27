@@ -1,3 +1,4 @@
+import * as C from './data/content.mjs';
 // schema.org structured data (JSON-LD). Ratings and price ranges are intentionally omitted
 // per the client brief; only the specials carry prices.
 import { faq as faqItems } from './data/content.mjs';
@@ -52,7 +53,27 @@ export function business(site) {
       'Maryland State Safety Inspection', 'Brake repair', 'Check engine light diagnostics', 'Engine repair',
       'Transmission repair', 'Auto A/C repair', 'Wheel alignment', 'Auto painting', 'Dent repair',
       'Windshield replacement', 'Fleet vehicle maintenance', 'Emissions repair (VEIP)',
+      'Car repair', 'Auto mechanic', 'Auto body shop', 'Oil change', 'Car maintenance', 'Tune-ups',
+      'Suspension and steering repair', 'Car battery replacement', 'Alternator and starter repair',
+      'Radiator and cooling system repair', 'Muffler and exhaust repair', 'Catalytic converter replacement',
+      'Tire sales', 'Car A/C recharge', 'Scratch and bumper repair', 'Towing',
     ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Auto repair and body shop services',
+      itemListElement: [
+        ...C.serviceGroups.map((g) => ({
+          '@type': 'OfferCatalog',
+          name: g.title,
+          itemListElement: g.items.map((it) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: it } })),
+        })),
+        {
+          '@type': 'OfferCatalog',
+          name: 'Body shop',
+          itemListElement: C.bodyWork.map((b) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: b.title, description: b.text } })),
+        },
+      ],
+    },
     currenciesAccepted: 'USD',
     ...(site.social?.length ? { sameAs: site.social.filter((s) => s.url).map((s) => s.url) } : {}),
     makesOffer: site.specials.map((sp) => ({
@@ -99,13 +120,14 @@ export function faqPage(items = faqItems) {
   };
 }
 
-export function service(site, { name, serviceType, description, path, offer }) {
+export function service(site, { name, serviceType, description, path, offer, alt }) {
   const b = base(site);
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name,
     serviceType,
+    ...(alt && alt.length ? { alternateName: alt } : {}),
     description,
     provider: { '@id': `${b}/#business` },
     areaServed: site.serviceArea.map((c) => ({ '@type': 'City', name: `${c}, MD` })),

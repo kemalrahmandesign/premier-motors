@@ -154,8 +154,8 @@ function footer(site, lang) {
       <div class="foot-col">
         <a class="foot-brand" href="${es ? '/es/' : '/'}"><img src="/assets/img/logo-full.webp" alt="Premier Motors LLC" width="1098" height="533"></a>
         <p class="foot-about">${es
-          ? 'Taller mecánico y de carrocería en Rockville, MD desde 2003. Servicio honesto en cada trabajo.'
-          : 'Auto repair and body shop in Rockville, MD since 2003. Service and honesty on every job.'}</p>
+          ? 'Taller mecánico, hojalatería y pintura en Rockville, MD desde 2003. Servicio honesto en cada trabajo.'
+          : 'Car repair, auto mechanic and body shop in Rockville, MD since 2003. Service and honesty on every job.'}</p>
         ${social ? `<div class="foot-socials">${social}</div>` : ''}
       </div>
       <div class="foot-col foot-col--svc">
@@ -170,6 +170,12 @@ function footer(site, lang) {
         <a href="/check-engine-light/">${es ? 'Luz de check engine' : 'Check engine light'}</a>
         <a href="/engine-repair/">${es ? 'Motor' : 'Engine repair'}</a>
         <a href="/transmission-repair/">${es ? 'Transmisión' : 'Transmission repair'}</a>
+        <a href="/suspension-steering/">${es ? 'Suspensión y dirección' : 'Suspension & steering'}</a>
+        <a href="/car-battery-electrical/">${es ? 'Batería y eléctrico' : 'Battery & electrical'}</a>
+        <a href="/radiator-cooling-system/">${es ? 'Radiador' : 'Radiator & cooling'}</a>
+        <a href="/exhaust-muffler/">${es ? 'Mofles y escape' : 'Muffler & exhaust'}</a>
+        <a href="/emissions-repair/">${es ? 'Emisiones (VEIP)' : 'Emissions repair'}</a>
+        <a href="/car-maintenance/">${es ? 'Mantenimiento' : 'Maintenance & tune-ups'}</a>
         <a href="/ac-repair/">${es ? 'Aire acondicionado' : 'A/C repair'}</a>
         <a href="/tires/">${es ? 'Llantas y alineación' : 'Tires & alignment'}</a>
         <a href="/auto-painting/">${es ? 'Pintura' : 'Auto painting'}</a>

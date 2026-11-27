@@ -17,6 +17,32 @@ export const related = (slugs, title = 'Related services') => `<section class="s
   </div>
 </section>`;
 
+// Homepage index of every service page. Anchor text uses the words people actually search.
+const INDEX = [
+  ['Car repair', [
+    ['/auto-repair/', 'Car & auto repair'], ['/brake-repair/', 'Brake repair & brake service'], ['/check-engine-light/', 'Check engine light & diagnostics'],
+    ['/engine-repair/', 'Engine repair'], ['/transmission-repair/', 'Transmission & clutch repair'], ['/suspension-steering/', 'Suspension, steering & shocks'],
+    ['/car-battery-electrical/', 'Battery, alternator & starter'], ['/radiator-cooling-system/', 'Radiator & overheating'], ['/ac-repair/', 'Car A/C repair & recharge'],
+    ['/exhaust-muffler/', 'Muffler & exhaust'], ['/emissions-repair/', 'Emissions repair (VEIP)'],
+  ]],
+  ['Body shop', [
+    ['/body-shop/', 'Auto body & collision repair'], ['/auto-painting/', 'Auto painting & paint repair'], ['/dent-repair/', 'Dent & scratch repair'],
+    ['/windshield-glass/', 'Windshield & auto glass'], ['/body-shop/', 'Insurance claim repairs'],
+  ]],
+  ['Maintenance & more', [
+    ['/oil-change/', 'Cheap oil change special'], ['/car-maintenance/', 'Maintenance & tune-ups'], ['/maryland-state-inspection/', 'MD state inspection'],
+    ['/tires/', 'Tires & wheel alignment'], ['/carmax-maxcare/', 'CarMax MaxCare warranty repairs'], ['/fleet-service/', 'Fleet & work van service'],
+  ]],
+];
+const serviceIndex = () => `<section class="section section--tight svc-index">
+  <div class="wrap">
+    ${X.sectionHead({ eyebrow: 'Every service, one shop', title: 'Your Rockville mechanic, auto shop and body shop.', accent: 'body shop', text: 'Whether you call it a mechanic, a garage, an auto shop or a body shop, Premier Motors handles car repair, collision repair and maintenance for Rockville, Gaithersburg, North Bethesda and Potomac drivers, all under one roof.' })}
+    <div class="svc-index-grid">${INDEX.map(([t, links]) => `
+      <div class="svc-index-col" data-reveal><h3>${t}</h3><ul>${links.map(([h, l]) => `<li><a href="${h}">${l}${icon('arrow-right')}</a></li>`).join('')}</ul></div>`).join('')}
+    </div>
+  </div>
+</section>`;
+
 function servicePage(site, biz, p) {
   const parent = p.group === 'body' ? ['/body-shop/', 'Body Shop'] : p.group === 'insurance' ? null : ['/auto-repair/', 'Repair Services'];
   const crumbs = [['/', 'Home'], ...(parent ? [parent] : []), ['', p.label]];
@@ -60,7 +86,7 @@ function servicePage(site, biz, p) {
     priority: p.group === 'insurance' ? '0.9' : '0.8',
     schema: [
       biz,
-      S.service(site, { name: p.service.name, serviceType: p.service.serviceType, description: p.lede, path: `/${p.slug}/` }),
+      S.service(site, { name: p.service.name, serviceType: p.service.serviceType, alt: p.service.alt, description: p.lede, path: `/${p.slug}/` }),
       S.breadcrumbs(site, crumbs.map(([href, name], i) => [i === crumbs.length - 1 ? `/${p.slug}/` : href, name])),
       S.faqPage(p.faq),
     ],
@@ -129,6 +155,7 @@ export default function pages(site) {
         X.about(site),
         X.fleet(site),
         X.faq(),
+        serviceIndex(),
         X.areas(site),
         X.contact(site),
         ctaBand(site),
@@ -139,7 +166,7 @@ export default function pages(site) {
     {
       path: '/body-shop/',
       out: 'body-shop/index.html',
-      title: 'Body Shop & Collision Repair in Rockville, MD | Premier Motors',
+      title: 'Auto Body Shop & Collision Repair in Rockville, MD | Premier Motors',
       description:
         'Body shop in Rockville, MD: collision, dent repair, painting and glass. All insurance and CarMax MaxCare accepted. Save on your deductible. Call for details.',
       priority: '0.9',
@@ -147,6 +174,7 @@ export default function pages(site) {
         biz,
         S.service(site, {
           name: 'Body Shop & Collision Repair',
+            alt: ['Auto body shop', 'Collision repair', 'Collision center', 'Car body repair', 'Fender bender repair', 'Bumper repair', 'Insurance claim repair', 'Hojalatería y pintura'],
           serviceType: 'Auto body and collision repair',
           description: 'Body work and collision repair, dent repair, auto painting, and windshield and glass replacement. All insurance companies accepted.',
           path: '/body-shop/',
@@ -158,7 +186,7 @@ export default function pages(site) {
         X.pageHero({
           crumbs: [['/', 'Home'], ['', 'Body Shop']],
           kicker: 'Body shop · Rockville, MD',
-          h1: 'Body Shop &amp; Collision Repair in Rockville, MD',
+          h1: 'Auto Body Shop &amp; Collision Repair in Rockville, MD',
           lede: 'Collision repair, dent repair, auto painting and glass, done right under the same roof as our mechanical shop. We work with all insurance companies and accept all CarMax MaxCare coverage.',
           actions: apptBtn('Get a free estimate', 'Body work / collision|Insurance claim') + callBtn(site),
           side: `<div class="ins-stack">${X.insuranceCards(site)}</div>`,
@@ -193,6 +221,7 @@ export default function pages(site) {
         biz,
         S.service(site, {
           name: 'Auto Repair',
+            alt: ['Car repair', 'Auto mechanic', 'Mechanic', 'Auto shop', 'Car repair shop', 'Auto service', 'Car service', 'Garage', 'Taller mecánico'],
           serviceType: 'Automotive repair and maintenance',
           description: 'Maintenance, brakes, suspension and steering, tires, engine diagnostics and repair, electrical, transmission, drivetrain, exhaust, emissions repair, heating and A/C, and towing.',
           path: '/auto-repair/',
@@ -218,7 +247,7 @@ export default function pages(site) {
         X.vehicles(),
         X.why(),
         X.faq(pick('Do I need', 'How long', 'What parts', 'What vehicles', 'Do you offer towing', 'What warranty')),
-        related(['brake-repair', 'check-engine-light', 'engine-repair', 'transmission-repair', 'ac-repair', 'tires', 'oil-change', 'maryland-state-inspection', 'fleet-service', 'carmax-maxcare'], 'Repair services'),
+        related(['brake-repair', 'check-engine-light', 'engine-repair', 'transmission-repair', 'suspension-steering', 'car-battery-electrical', 'radiator-cooling-system', 'exhaust-muffler', 'emissions-repair', 'ac-repair', 'tires', 'car-maintenance', 'oil-change', 'maryland-state-inspection', 'fleet-service', 'carmax-maxcare'], 'Repair services'),
         ctaBand(site),
       ].join('\n\n'),
     },
@@ -242,6 +271,7 @@ export default function pages(site) {
           biz,
           S.service(site, {
             name: 'Maryland State Safety Inspection',
+            alt: ['MD state inspection', 'Maryland safety inspection', 'State inspection', 'Maryland inspection station'],
             serviceType: 'Vehicle safety inspection',
             description: 'Maryland State Safety Inspection with in-house repairs if your vehicle needs work to pass.',
             path: '/maryland-state-inspection/',
@@ -292,6 +322,7 @@ export default function pages(site) {
           biz,
           S.service(site, {
             name: 'Oil Change + Filter + Tire Rotation',
+            alt: ['Oil change', 'Cheap oil change', 'Discount oil change', 'Synthetic oil change', 'Oil and filter change', 'Lube service'],
             serviceType: 'Oil change',
             description: `Discount full synthetic oil change special in Rockville, MD: up to 5 quarts of full synthetic oil, new filter and tire rotation. ${sp.fine}`,
             path: '/oil-change/',
@@ -328,9 +359,9 @@ export default function pages(site) {
       path: '/es/',
       out: 'es/index.html',
       lang: 'es',
-      title: 'Taller Mecánico y de Carrocería en Rockville, MD | Premier Motors',
+      title: 'Taller Mecánico y Hojalatería en Rockville, MD | Premier Motors',
       description:
-        'Taller mecánico y de carrocería en Rockville, MD desde 2003. Se habla español. Aceptamos todos los seguros. Ahorre en su deducible. Llame al (301) 340-2130.',
+        'Taller mecánico, hojalatería y pintura en Rockville, MD desde 2003. Se habla español. Aceptamos todos los seguros y CarMax MaxCare. Llame al (301) 340-2130.',
       alternates: [['en', '/'], ['es', '/es/'], ['x-default', '/']],
       priority: '0.8',
       schema: [biz],

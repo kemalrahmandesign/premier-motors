@@ -701,3 +701,13 @@ a.util-item:hover { color: var(--gold-lt); }
 .visit-sign figcaption { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 8px; padding: 26px 14px 10px; font-size: 14.5px; color: var(--text); background: linear-gradient(180deg, transparent, rgba(10,10,10,.85)); }
 .visit-sign figcaption svg { width: 16px; height: 16px; color: var(--gold); }
 @media (max-width: 720px) { .band-frame figcaption { font-size: 10.5px; letter-spacing: .14em; right: 18px; } }
+
+/* Homepage service index */
+.svc-index { border-top: 1px solid var(--line); }
+.svc-index-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 3vw, 48px); margin-top: 40px; }
+.svc-index-col h3 { font-family: var(--font-label); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin: 0 0 14px; font-weight: 400; }
+.svc-index-col ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.svc-index-col li a { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 2px; border-bottom: 1px solid var(--line); color: var(--text); font-size: 17px; font-weight: 500; transition: color .15s, padding .2s var(--ease); }
+.svc-index-col li a .icon { width: 16px; height: 16px; color: var(--gold); flex: none; opacity: .7; }
+.svc-index-col li a:hover { color: var(--gold-lt); padding-left: 8px; }
+@media (max-width: 900px) { .svc-index-grid { grid-template-columns: 1fr; gap: 28px; } }

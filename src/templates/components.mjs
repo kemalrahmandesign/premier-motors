@@ -2,7 +2,7 @@
 import { esc, icon, addressLine } from './layout.mjs';
 import * as C from '../data/content.mjs';
 
-const SVC_LINKS = {"maintenance": [["/oil-change/", "Oil change special"], ["/maryland-state-inspection/", "MD inspection"]], "brakes": [["/brake-repair/", "Brake repair"], ["/tires/", "Alignment"]], "engine": [["/check-engine-light/", "Check engine light"], ["/engine-repair/", "Engine repair"]], "transmission": [["/transmission-repair/", "Transmission repair"]], "tires": [["/tires/", "Tires &amp; alignment"]], "ac": [["/ac-repair/", "A/C repair"]], "towing": []};
+const SVC_LINKS = {"maintenance": [["/oil-change/", "Oil change special"], ["/car-maintenance/", "Maintenance &amp; tune-ups"], ["/maryland-state-inspection/", "MD inspection"]], "brakes": [["/brake-repair/", "Brake repair"], ["/suspension-steering/", "Suspension &amp; steering"], ["/tires/", "Alignment"]], "engine": [["/check-engine-light/", "Check engine light"], ["/engine-repair/", "Engine repair"], ["/car-battery-electrical/", "Battery &amp; electrical"], ["/radiator-cooling-system/", "Radiator &amp; cooling"]], "transmission": [["/transmission-repair/", "Transmission repair"], ["/exhaust-muffler/", "Muffler &amp; exhaust"], ["/emissions-repair/", "Emissions repair"]], "tires": [["/tires/", "Tires &amp; alignment"]], "ac": [["/ac-repair/", "A/C repair"]], "towing": []};
 
 const head = ({ eyebrow, title, accent = '', text = '', center = false, light = false, h = 'h2', id = '' }) => `
     <div class="section-head${center ? ' center' : ''}" data-reveal>
